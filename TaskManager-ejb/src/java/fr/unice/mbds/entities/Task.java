@@ -5,11 +5,20 @@
  */
 package fr.unice.mbds.entities;
 
+import fr.unice.mbds.status.StatusEnum;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 
 /**
  *
@@ -21,6 +30,58 @@ public class Task implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    
+    private String title;
+    
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    private String description;
+    
+    @Enumerated(EnumType.STRING)
+    private StatusEnum status = StatusEnum.NO_ATTRIBUTED;
+    
+    @ManyToMany(mappedBy = "tasks")
+    private List<Person> persons = new ArrayList<>();
+    
+    public Task(){}
+    
+    public Task(String title, String description){
+        this.title = title;
+        this.description = description;
+    }
+    
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public StatusEnum getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusEnum status) {
+        this.status = status;
+    }
+
+    public List<Person> getPersons() {
+        return persons;
+    }
+
+    public void setPersons(List<Person> persons) {
+        this.persons = persons;
+    }
 
     public int getId() {
         return id;
