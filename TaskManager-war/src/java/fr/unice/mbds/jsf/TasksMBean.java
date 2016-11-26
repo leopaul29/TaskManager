@@ -36,32 +36,33 @@ public class TasksMBean implements Serializable {
         if (listTask.isEmpty()) {
             refreshCache();
         } else {
-            System.out.println("USE DATA CACHE");
+            System.out.println("TASK : USE DATA CACHE");
         }
 
         return listTask;
     }
 
     public void refreshCache() {
-        System.out.println("REGENERATE CACHE");
+        System.out.println("TASK : REGENERATE CACHE");
         listTask = tm.findAll();
+        System.out.println("PERSON : " + listTask.size());
     }
 
     public String createTestData() {
-        System.out.println("JSF BEAN CREATETESTDATA");
+        System.out.println("TASK : JSF BEAN CREATETESTDATA");
         // create
         refreshCache();
         return "index?faces=redirect=true";
     }
     
     public void addTask() {
-        System.out.println("ADD TASK");
+        System.out.println("TASK : ADD TASK");
         
         refreshCache();
     }
     
     public void deleteTask() {
-        System.out.println("DELETE TASK");
+        System.out.println("TASK : DELETE TASK");
         
         refreshCache();
     }
