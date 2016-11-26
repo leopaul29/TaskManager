@@ -35,7 +35,7 @@ public class InitDB {
     @PostConstruct
     public void createDataBase(){
         List<Task> tasks = tm.createTestTasks();
-        List<Person> persons = pm.createTestsPersons();
+        List<Person> persons = pm.createTestPersons();
         
         //TODO ADD task for persons
     }

@@ -13,6 +13,7 @@ import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -24,10 +25,9 @@ public class TasksManager {
     @PersistenceContext(unitName = "TaskManager-ejbPU")
     private EntityManager em;
 
-    public void createTask(Object object) {
-        em.persist(object);
+    public void createTask(Task task) {
+        em.persist(task);
     }
-    
     
     public List<Task> createTestTasks(){
         List<Task> taskList = new ArrayList();
@@ -39,6 +39,20 @@ public class TasksManager {
         }
         
         return taskList;
+    }
+    
+    public List<Task> findAll() {
+        Query q = em.createQuery("select t from Task t");
+        
+        return q.getResultList();
+    }
+    
+    public List<Task> findRange(int start, int nb) {
+        Query q = em.createQuery("select t from Task t");
+        q.setFirstResult(start);
+        q.setMaxResults(nb);
+        
+        return q.getResultList();
     }
     
 }
