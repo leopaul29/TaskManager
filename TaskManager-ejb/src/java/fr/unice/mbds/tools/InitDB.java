@@ -37,7 +37,7 @@ public class InitDB {
     @PostConstruct
     public void createDataBase(){
         try {
-            List<Task> tasks = tm.createTestTasks();
+            List<Task> tasks = tm.createTestsTasks();
             List<Person> persons = pm.createTestsPersons();
             
             //Add relation between persons and tasks
@@ -59,6 +59,5 @@ public class InitDB {
         } catch (Exception ex) {
             Logger.getLogger(InitDB.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }
 }

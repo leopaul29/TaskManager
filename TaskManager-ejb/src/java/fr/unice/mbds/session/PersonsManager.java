@@ -13,6 +13,7 @@ import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -52,4 +53,18 @@ public class PersonsManager {
         return personList;
     }
     
+    public List<Person> findAll() {
+        Query q = em.createQuery("select p from Person p");
+        
+        return q.getResultList();
+    }
+    
+    public List<Person> findRange(int start, int nb) {
+        Query q = em.createQuery("select p from Person p");
+        q.setFirstResult(start);
+        q.setMaxResults(nb);
+        
+        return q.getResultList();
+    }
+        
 }
