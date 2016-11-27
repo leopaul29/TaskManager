@@ -4,5 +4,3 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
-TaskManager-ejb/nbproject/private/
-TaskManager-war/nbproject/
