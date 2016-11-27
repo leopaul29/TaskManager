@@ -10,6 +10,8 @@ import fr.unice.mbds.entities.Task;
 import fr.unice.mbds.session.PersonsManager;
 import fr.unice.mbds.session.TasksManager;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -34,9 +36,29 @@ public class InitDB {
     
     @PostConstruct
     public void createDataBase(){
-        List<Task> tasks = tm.createTestTasks();
-        List<Person> persons = pm.createTestsPersons();
+        try {
+            List<Task> tasks = tm.createTestTasks();
+            List<Person> persons = pm.createTestsPersons();
+            
+            //Add relation between persons and tasks
+            for( int i = 0; i < tasks.size()/2; i++){
+                Person person = null;
+                Task task = null;
+                System.out.println("coucou");
+                
+                do{
+                    person = persons.get( (int) (Math.random()*persons.size()) );
+                    task = tasks.get( (int) (Math.random()*tasks.size()) );
+                    System.out.println(!person.getTasks().contains(task)+ " ");
+                }while(person.getTasks().contains(task));
+                
+                System.out.println(task.getTitle() + " " + person.getLogin());
+                pm.addTaskToPerson(person, task);
+                System.out.println(person);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(InitDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
-        //TODO ADD task for persons
     }
 }

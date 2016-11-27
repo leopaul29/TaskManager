@@ -79,8 +79,12 @@ public class Task implements Serializable {
         return persons;
     }
 
-    public void setPersons(List<Person> persons) {
-        this.persons = persons;
+    public void addPerson(Person person) {
+        this.persons.add(person);
+    }
+    
+    public void removePerson(Person person) {
+        this.persons.remove(person);
     }
 
     public int getId() {

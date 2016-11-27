@@ -6,6 +6,7 @@
 package fr.unice.mbds.session;
 
 import fr.unice.mbds.entities.Person;
+import fr.unice.mbds.entities.Task;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -25,6 +26,18 @@ public class PersonsManager {
 
     public void createPerson(Person person) {
         em.persist(person);
+    }
+    
+    public Person addTaskToPerson(Person person, Task task)throws Exception{
+        Person p = em.merge(person);
+        p.addTask(task);
+        return p;
+    }
+    
+    public Person removeTaskToPerson(Person person, Task task)throws Exception{
+        Person p = em.merge(person);
+        p.removeTask(task);
+        return p;
     }
     
     public List<Person> createTestsPersons(){
