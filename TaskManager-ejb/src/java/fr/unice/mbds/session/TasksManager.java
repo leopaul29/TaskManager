@@ -29,7 +29,7 @@ public class TasksManager {
         em.persist(task);
     }
     
-    public List<Task> createTestTasks(){
+    public List<Task> createTestsTasks(){
         List<Task> taskList = new ArrayList();
         
         for(int i = 0; i < 500; i++){
