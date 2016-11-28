@@ -14,6 +14,7 @@ import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.swing.SortOrder;
 
 /**
  *
@@ -64,7 +65,9 @@ public class PersonsManager {
         return q.getResultList();
     }
     
-    public List<Person> findRange(int start, int nb) {
+    public List<Person> findRange(int start, int nb, String nomColonne, String so) {
+        System.out.println("PM nom col=" + nomColonne + " - sortOrder=" + so);
+        // changer la requete avec la column a sorter + order ASC/DESC .?
         Query q = em.createQuery("select p from Person p");
         q.setFirstResult(start);
         q.setMaxResults(nb);
@@ -72,6 +75,11 @@ public class PersonsManager {
         return q.getResultList();
     }
     
+    public int count() {
+        Query q = em.createQuery("select count(p) from Person p");
+        Number n = (Number) q.getSingleResult();
+        return n.intValue();
+    }
     
     public void removePerson(Person person) throws Exception{
         Person p = em.merge(person);

@@ -8,7 +8,7 @@
 
     <f:event type="preRenderView"
              listener="#{personsMBean.refreshCache()}"/>
-    
+
     <h:head>
         <title>Gestionnaire des Personnes</title>
     </h:head>
@@ -30,7 +30,7 @@
                     <h:commandButton action="#{personsMBean.createPerson()}"
                                      value="create"/>
                 </h:form>
-                
+
             </ui:define>
 
             <ui:define name="content">
@@ -41,7 +41,13 @@
 
                     <h:form>
                         <h1><h:outputText value="Person List"/></h1>
-                        <p:dataTable value="#{personsMBean.persons}" var="item">
+                        <p:dataTable value="#{personsMBean.modele}" 
+                                     var="item"
+                                     rows="10"
+                                     paginator="true"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15"
+                                     lazy="true">
                             <p:column sortBy="#{item.id}">
                                 <f:facet name="header">
                                     <h:outputText value="Id"/>
@@ -64,7 +70,9 @@
                                 <f:facet name="header">
                                     <h:outputText value="Supprimer"/>
                                 </f:facet>
-                                <p:commandButton value="Supprimer" actionListener="#{personsMBean.removePerson(item)}"/>
+                                <h:form>
+                                    <p:commandButton value="Supprimer" actionListener="#{personsMBean.removePerson(item)}"/>
+                                </h:form>
                             </p:column>
                         </p:dataTable>
                     </h:form>
