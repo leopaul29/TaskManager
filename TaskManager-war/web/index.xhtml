@@ -1,60 +1,26 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
-    
-    <f:event type="preRenderView"
-             listener="#{tasksMBean.refreshCache()}"/>
-    
-    <h:head>
-        <title>Gestionnaire de Taches</title>
-    </h:head>
-    <h:body>
-        <h1>Gestionnaire de Taches</h1>
-        
-        <!--<h:form>
-            <h:commandButton 
-                action="#{tasksMBean.createTestData()}"
-                value="Créer des données de tests"/>
-        </h:form>-->
-        
-        <f:view>
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
 
+    <body>
 
-            <h:form>
-                <h1><h:outputText value="Task List"/></h1>
-                <p:dataTable value="#{tasksMBean.tasks}" var="item">
-                    <p:column sortBy="#{item.id}">
-                        <f:facet name="header">
-                            <h:outputText value="Id"/>
-                        </f:facet>
-                        <h:outputText value="#{item.id}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Title"/>
-                        </f:facet>
-                        <h:outputText value="#{item.title}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Status"/>
-                        </f:facet>
-                        <h:outputText value="#{item.status}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Description"/>
-                        </f:facet>
-                        <h:outputText value="#{item.description}"/>
-                    </p:column>
-                </p:dataTable>
-            </h:form>
-        </f:view>
+        <ui:composition template="./resources/defaultTemplate.xhtml">
 
-        
-    </h:body>
+            <ui:define name="top">
+                top
+            </ui:define>
+
+            <ui:define name="left">
+                left
+            </ui:define>
+
+            <ui:define name="content">
+                content
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
 </html>
-

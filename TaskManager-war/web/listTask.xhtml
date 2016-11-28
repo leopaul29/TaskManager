@@ -7,13 +7,13 @@
       xmlns:p="http://primefaces.org/ui">
 
     <f:event type="preRenderView"
-             listener="#{personsMBean.refreshCache()}"/>
-    
+             listener="#{tasksMBean.refreshCache()}"/>
+
     <h:head>
-        <title>Gestionnaire des Personnes</title>
+        <title>Gestionnaire de Taches</title>
     </h:head>
     <h:body>
-
+        
         <ui:composition template="./resources/defaultTemplate.xhtml">
 
             <ui:define name="top">
@@ -22,17 +22,23 @@
 
             <ui:define name="left">
                 left
+                <!--<h:form>
+                    <h:commandButton 
+                        action="#{tasksMBean.createTestData()}"
+                        value="Créer des données de tests"/>
+                </h:form>-->
             </ui:define>
 
             <ui:define name="content">
-                <h1>Gestionnaire des Personnes</h1>
+                <h1>Gestionnaire de Taches</h1>
+
 
                 <f:view>
 
 
                     <h:form>
-                        <h1><h:outputText value="Person List"/></h1>
-                        <p:dataTable value="#{personsMBean.persons}" var="item">
+                        <h1><h:outputText value="Task List"/></h1>
+                        <p:dataTable value="#{tasksMBean.tasks}" var="item">
                             <p:column sortBy="#{item.id}">
                                 <f:facet name="header">
                                     <h:outputText value="Id"/>
@@ -41,22 +47,27 @@
                             </p:column>
                             <p:column>
                                 <f:facet name="header">
-                                    <h:outputText value="Login"/>
+                                    <h:outputText value="Title"/>
                                 </f:facet>
-                                <h:outputText value="#{item.login}"/>
+                                <h:outputText value="#{item.title}"/>
                             </p:column>
                             <p:column>
                                 <f:facet name="header">
-                                    <h:outputText value="Password"/>
+                                    <h:outputText value="Status"/>
                                 </f:facet>
-                                <h:outputText value="#{item.password}"/>
+                                <h:outputText value="#{item.status}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Description"/>
+                                </f:facet>
+                                <h:outputText value="#{item.description}"/>
                             </p:column>
                         </p:dataTable>
                     </h:form>
                 </f:view>
             </ui:define>
-
         </ui:composition>
-
     </h:body>
 </html>
+
