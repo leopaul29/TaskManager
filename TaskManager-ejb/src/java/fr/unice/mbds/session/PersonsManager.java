@@ -71,5 +71,10 @@ public class PersonsManager {
         
         return q.getResultList();
     }
-        
+    
+    
+    public void removePerson(Person person) throws Exception{
+        Person p = em.merge(person);
+        em.remove(p);
+    }
 }

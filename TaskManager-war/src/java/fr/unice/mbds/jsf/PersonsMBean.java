@@ -10,6 +10,8 @@ import fr.unice.mbds.session.PersonsManager;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -74,6 +76,16 @@ public class PersonsMBean implements Serializable {
         
         refreshCache();
         return "listPerson?faces=redirect=true";
+    }
+    
+    public void removePerson(Person person){
+        System.out.println("Remove person: " + person.getId());
+        try {
+            pm.removePerson(person);
+            refreshCache();
+        } catch (Exception ex) {
+            Logger.getLogger(PersonsMBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }

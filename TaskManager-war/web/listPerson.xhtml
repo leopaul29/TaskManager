@@ -60,6 +60,12 @@
                                 </f:facet>
                                 <h:outputText value="#{item.password}"/>
                             </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Supprimer"/>
+                                </f:facet>
+                                <p:commandButton value="Supprimer" actionListener="#{personsMBean.removePerson(item)}"/>
+                            </p:column>
                         </p:dataTable>
                     </h:form>
                 </f:view>

@@ -11,6 +11,8 @@ import fr.unice.mbds.status.StatusEnum;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -86,4 +88,14 @@ public class TasksMBean implements Serializable {
         return "listTask?faces=redirect=true";
     }
 
+    public void removeTask(Task task){
+        System.out.println("Remove task: " + task.getId());
+        try {
+            tm.removeTask(task);
+            refreshCache();
+        } catch (Exception ex) {
+            Logger.getLogger(PersonsMBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
 }
