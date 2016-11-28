@@ -26,6 +26,25 @@ public class PersonsMBean implements Serializable {
     private PersonsManager pm;
     private List<Person> listPerson = new ArrayList<>();
     
+    private String login;
+    private String password;
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
     /**
      * Creates a new instance of PersonsMBean
      */
@@ -48,11 +67,14 @@ public class PersonsMBean implements Serializable {
         System.out.println("PERSON : " + listPerson.size());
     }
 
-    public String createTestData() {
-        System.out.println("PERSON : JSF BEAN CREATETESTDATA");
+    public String createPerson() {
+        System.out.println("PERSON : JSF BEAN CREATEPERSON");
+        
+        pm.createPerson(login, password);
+        
         // create
         refreshCache();
-        return "index?faces=redirect=true";
+        return "listPerson?faces=redirect=true";
     }
     
 }

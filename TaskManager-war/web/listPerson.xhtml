@@ -21,7 +21,16 @@
             </ui:define>
 
             <ui:define name="left">
-                left
+                <h:form>
+                    <h3>Ajouter une personne</h3>
+                    <h:outputLabel value="login"/>
+                    <h:inputText value="#{personsMBean.login}"/>
+                    <h:outputLabel value="password"/>
+                    <h:inputText value="#{personsMBean.password}"/>
+                    <h:commandButton action="#{personsMBean.createPerson}"
+                                     value="create"/>
+                </h:form>
+                
             </ui:define>
 
             <ui:define name="content">
