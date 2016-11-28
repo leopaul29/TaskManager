@@ -26,10 +26,8 @@
                     <h:outputLabel value="Title"/>
                     <h:inputText value="#{tasksMBean.title}"/>
                     <h:outputLabel value="Status"/>
-                    <h:selectOneMenu value="#{tasksMBean.status}">
-                        <f:selectItem itemValue="NO_ATTRIBUTED" itemLabel="NO ATTRIBUTED" />
-                        <f:selectItem itemValue="IN_PROGRESS" itemLabel="IN PROGRESS" />
-                        <f:selectItem itemValue="COMPLETED" itemLabel="COMPLETED" />
+                    <h:selectOneMenu value="#{tasksMBean.status}" >
+                        <f:selectItems value="#{tasksMBean.allStatus}" var="status" itemValue="#{status}" itemLabel="#{status.name}"/>
                     </h:selectOneMenu>
                     <h:outputLabel value="Description"/>
                     <h:inputTextarea value="#{tasksMBean.description}"/>
@@ -64,7 +62,10 @@
                                 <f:facet name="header">
                                     <h:outputText value="Status"/>
                                 </f:facet>
-                                <h:outputText value="#{item.status}"/>
+                                <h:selectOneMenu value="#{item.status}">
+                                    <f:selectItems value="#{tasksMBean.allStatus}" var="status" itemValue="#{status}" itemLabel="#{status.name}"/>
+                                    <f:ajax listener="#{tasksMBean.updateTask(item)}" />
+                                </h:selectOneMenu>
                             </p:column>
                             <p:column>
                                 <f:facet name="header">

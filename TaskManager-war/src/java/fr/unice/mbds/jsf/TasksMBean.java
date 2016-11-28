@@ -40,6 +40,10 @@ public class TasksMBean implements Serializable {
     public void setTitle(String title) {
         this.title = title;
     }
+    
+    public StatusEnum[] getAllStatus(){
+        return StatusEnum.values();
+    }
 
     public StatusEnum getStatus() {
         return status;
@@ -47,6 +51,15 @@ public class TasksMBean implements Serializable {
 
     public void setStatus(StatusEnum status) {
         this.status = status;
+    }
+    
+    public void updateTask(Task task){
+        System.out.println("Update Task  : " + task.getId());
+        try {
+            tm.update(task);
+        } catch (Exception ex) {
+            Logger.getLogger(TasksMBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public String getDescription() {

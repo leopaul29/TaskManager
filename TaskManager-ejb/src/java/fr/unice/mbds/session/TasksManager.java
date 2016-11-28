@@ -64,5 +64,9 @@ public class TasksManager {
     public void removeTask(Task task) throws Exception{
         Task t = em.merge(task);
         em.remove(t);
-    } 
+    }
+    
+    public Task update(Task task) throws Exception{
+        return em.merge(task);
+    }
 }

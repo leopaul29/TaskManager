@@ -10,7 +10,17 @@ package fr.unice.mbds.status;
  * @author 53js-Seb
  */
 public enum StatusEnum {
-    NO_ATTRIBUTED,
-    IN_PROGRESS,
-    COMPLETED
+    NO_ATTRIBUTED("non attribuée"),
+    IN_PROGRESS("en cours"),
+    COMPLETED("complète");
+    
+    private String name;
+    
+    private StatusEnum(String name){
+        this.name = name;
+    }
+    
+    public String getName(){
+        return name;
+    }
 }
