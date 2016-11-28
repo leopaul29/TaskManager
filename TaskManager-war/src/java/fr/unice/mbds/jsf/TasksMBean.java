@@ -11,11 +11,13 @@ import fr.unice.mbds.status.StatusEnum;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import org.primefaces.model.LazyDataModel;
 
 /**
  *
@@ -73,7 +75,31 @@ public class TasksMBean implements Serializable {
     /**
      * Creates a new instance of TasksMBean
      */
+    private LazyDataModel<Task> modele;
+
+    public LazyDataModel<Task> getModele() {
+        return modele;
+    }
+    
     public TasksMBean() {
+        modele = new LazyDataModel<Task>() {
+            
+            @Override
+            public List<Task> load(int start, int nb, String nomColonne, org.primefaces.model.SortOrder orderTri, Map<String, Object> filters) {
+                // On va requeter pour récupérer
+                // les comptes correspondant aux paramètres
+                // recus
+                System.out.println("LOAD start=" + start + " - nb=" + nb);
+                System.out.println("Nom col=" + nomColonne + " - tri=" + orderTri);
+
+                return tm.findRange(start, nb, nomColonne, orderTri.toString());
+            }
+
+            @Override
+            public int getRowCount() {
+                return tm.count();
+            }
+        };
     }
 
     public List<Task> getTasks() {
@@ -89,7 +115,7 @@ public class TasksMBean implements Serializable {
     public void refreshCache() {
         System.out.println("TASK : REGENERATE CACHE");
         listTask = tm.findAll();
-        System.out.println("PERSON : " + listTask.size());
+        System.out.println("TASK : " + listTask.size());
     }
 
     public String createTask() {
@@ -101,14 +127,16 @@ public class TasksMBean implements Serializable {
         return "listTask?faces=redirect=true";
     }
 
-    public void removeTask(Task task){
+    public String removeTask(Task task){
         System.out.println("Remove task: " + task.getId());
         try {
             tm.removeTask(task);
             refreshCache();
         } catch (Exception ex) {
-            Logger.getLogger(PersonsMBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TasksMBean.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        return "listTask?faces=redirect=true";
     }
     
 }

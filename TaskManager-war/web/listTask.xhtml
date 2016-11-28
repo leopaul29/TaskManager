@@ -45,7 +45,13 @@
 
                     <h:form>
                         <h1><h:outputText value="Task List"/></h1>
-                        <p:dataTable value="#{tasksMBean.tasks}" var="item">
+                        <p:dataTable value="#{tasksMBean.modele}" 
+                                     var="item"
+                                     rows="10"
+                                     paginator="true"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15"
+                                     lazy="true">
                             <p:column sortBy="#{item.id}">
                                 <f:facet name="header">
                                     <h:outputText value="Id"/>

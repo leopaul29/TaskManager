@@ -53,12 +53,20 @@ public class TasksManager {
         return q.getResultList();
     }
     
-    public List<Task> findRange(int start, int nb) {
+    public List<Task> findRange(int start, int nb, String nomColonne, String so) {
+        System.out.println("TM nom col=" + nomColonne + " - sortOrder=" + so);
+        // changer la requete avec la column a sorter + order ASC/DESC .?
         Query q = em.createQuery("select t from Task t");
         q.setFirstResult(start);
         q.setMaxResults(nb);
         
         return q.getResultList();
+    }
+    
+    public int count() {
+        Query q = em.createQuery("select count(t) from Task t");
+        Number n = (Number) q.getSingleResult();
+        return n.intValue();
     }
     
     public void removeTask(Task task) throws Exception{
