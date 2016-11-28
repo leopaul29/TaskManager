@@ -7,6 +7,7 @@ package fr.unice.mbds.session;
 
 import fr.unice.mbds.entities.Person;
 import fr.unice.mbds.entities.Task;
+import fr.unice.mbds.status.StatusEnum;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -25,6 +26,12 @@ public class TasksManager {
     @PersistenceContext(unitName = "TaskManager-ejbPU")
     private EntityManager em;
 
+    public void createTask(String title, StatusEnum status, String description) {
+        Task t = new Task(title, description);
+        t.setStatus(status);
+        createTask(t);
+    }
+    
     public void createTask(Task task) {
         em.persist(task);
     }

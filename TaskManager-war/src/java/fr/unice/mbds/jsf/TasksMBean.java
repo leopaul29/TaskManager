@@ -7,6 +7,7 @@ package fr.unice.mbds.jsf;
 
 import fr.unice.mbds.entities.Task;
 import fr.unice.mbds.session.TasksManager;
+import fr.unice.mbds.status.StatusEnum;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,34 @@ public class TasksMBean implements Serializable {
     @EJB
     private TasksManager tm;
     private List<Task> listTask = new ArrayList<>();
+    
+    private String title;
+    private StatusEnum status;
+    private String description;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public StatusEnum getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusEnum status) {
+        this.status = status;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     /**
      * Creates a new instance of TasksMBean
@@ -48,23 +77,13 @@ public class TasksMBean implements Serializable {
         System.out.println("PERSON : " + listTask.size());
     }
 
-    public String createTestData() {
-        System.out.println("TASK : JSF BEAN CREATETESTDATA");
-        // create
-        refreshCache();
-        return "index?faces=redirect=true";
-    }
-    
-    public void addTask() {
-        System.out.println("TASK : ADD TASK");
+    public String createTask() {
+        System.out.println("TASK : JSF BEAN CREATETASK");
+        
+        tm.createTask(title, status, description);
         
         refreshCache();
-    }
-    
-    public void deleteTask() {
-        System.out.println("TASK : DELETE TASK");
-        
-        refreshCache();
+        return "listTask?faces=redirect=true";
     }
 
 }

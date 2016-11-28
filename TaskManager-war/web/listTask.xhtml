@@ -21,12 +21,21 @@
             </ui:define>
 
             <ui:define name="left">
-                left
-                <!--<h:form>
-                    <h:commandButton 
-                        action="#{tasksMBean.createTestData()}"
-                        value="Créer des données de tests"/>
-                </h:form>-->
+                <h:form>
+                    <h3>Ajouter une tache</h3>
+                    <h:outputLabel value="Title"/>
+                    <h:inputText value="#{tasksMBean.title}"/>
+                    <h:outputLabel value="Status"/>
+                    <h:selectOneMenu value="#{tasksMBean.status}">
+                        <f:selectItem itemValue="NO_ATTRIBUTED" itemLabel="NO ATTRIBUTED" />
+                        <f:selectItem itemValue="IN_PROGRESS" itemLabel="IN PROGRESS" />
+                        <f:selectItem itemValue="COMPLETED" itemLabel="COMPLETED" />
+                    </h:selectOneMenu>
+                    <h:outputLabel value="Description"/>
+                    <h:inputTextarea value="#{tasksMBean.description}"/>
+                    <h:commandButton action="#{tasksMBean.createTask()}"
+                                     value="create"/>
+                </h:form>
             </ui:define>
 
             <ui:define name="content">

@@ -72,7 +72,6 @@ public class PersonsMBean implements Serializable {
         
         pm.createPerson(login, password);
         
-        // create
         refreshCache();
         return "listPerson?faces=redirect=true";
     }
