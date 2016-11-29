@@ -55,13 +55,16 @@ public class TasksMBean implements Serializable {
         this.status = status;
     }
     
-    public void updateTask(Task task){
+    public String updateTask(Task task){
         System.out.println("Update Task  : " + task.getId());
         try {
             tm.update(task);
+            refreshCache();
         } catch (Exception ex) {
             Logger.getLogger(TasksMBean.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        return "listTask?faces=redirect=true";
     }
 
     public String getDescription() {
