@@ -14,7 +14,6 @@ import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.swing.SortOrder;
 
 /**
  *
@@ -23,6 +22,7 @@ import javax.swing.SortOrder;
 @Stateless
 @LocalBean
 public class PersonsManager {
+
     @PersistenceContext(unitName = "TaskManager-ejbPU")
     private EntityManager em;
 
@@ -30,58 +30,68 @@ public class PersonsManager {
         Person p = new Person(login, password);
         createPerson(p);
     }
-    
+
     public void createPerson(Person person) {
         em.persist(person);
     }
-    
-    public Person addTaskToPerson(Person person, Task task)throws Exception{
+
+    public Person addTaskToPerson(Person person, Task task) throws Exception {
         Person p = em.merge(person);
         p.addTask(task);
         return p;
     }
-    
-    public Person removeTaskToPerson(Person person, Task task)throws Exception{
+
+    public Person removeTaskToPerson(Person person, Task task) throws Exception {
         Person p = em.merge(person);
         p.removeTask(task);
         return p;
     }
-    
-    public List<Person> createTestsPersons(){
+
+    public List<Person> createTestsPersons() {
         List<Person> personList = new ArrayList();
-        
-        for(int i = 0; i < 80; i++){
-            Person person = new Person("login" + i , "password" + i);
+
+        for (int i = 0; i < 80; i++) {
+            Person person = new Person("login" + i, "password" + i);
             personList.add(person);
             createPerson(person);
         }
-        
+
         return personList;
     }
-    
+
     public List<Person> findAll() {
         Query q = em.createQuery("select p from Person p");
-        
+
         return q.getResultList();
     }
-    
+
     public List<Person> findRange(int start, int nb, String nomColonne, String so) {
         System.out.println("PM nom col=" + nomColonne + " - sortOrder=" + so);
-        // changer la requete avec la column a sorter + order ASC/DESC .?
-        Query q = em.createQuery("select p from Person p");
+        if (nomColonne == null) {
+            nomColonne = "id";
+        }
+        if (so.equals("ASCENDING")) {
+            so = "ASC";
+        } else {
+            so = "DESC";
+        }
+
+        String req = "select p from Person p order by p." + nomColonne + " " + so;
+        System.out.println("req : " + req);
+        Query q = em.createQuery(req);
         q.setFirstResult(start);
         q.setMaxResults(nb);
-        
+
         return q.getResultList();
     }
-    
+
     public int count() {
         Query q = em.createQuery("select count(p) from Person p");
         Number n = (Number) q.getSingleResult();
         return n.intValue();
     }
-    
-    public void removePerson(Person person) throws Exception{
+
+    public void removePerson(Person person) throws Exception {
         Person p = em.merge(person);
         em.remove(p);
     }

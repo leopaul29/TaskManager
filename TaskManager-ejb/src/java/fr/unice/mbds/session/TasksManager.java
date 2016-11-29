@@ -55,8 +55,18 @@ public class TasksManager {
     
     public List<Task> findRange(int start, int nb, String nomColonne, String so) {
         System.out.println("TM nom col=" + nomColonne + " - sortOrder=" + so);
-        // changer la requete avec la column a sorter + order ASC/DESC .?
-        Query q = em.createQuery("select t from Task t");
+        if (nomColonne == null) {
+            nomColonne = "id";
+        }
+        if (so.equals("ASCENDING")) {
+            so = "ASC";
+        } else {
+            so = "DESC";
+        }
+        
+        String req = "select t from Task t order by t." + nomColonne + " " + so;
+        System.out.println("req : " + req);
+        Query q = em.createQuery(req);
         q.setFirstResult(start);
         q.setMaxResults(nb);
         
