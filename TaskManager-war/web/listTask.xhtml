@@ -41,11 +41,11 @@
 
 
                 <f:view>
-
-
                     <h:form>
                         <h1><h:outputText value="Task List"/></h1>
-                        <p:dataTable value="#{tasksMBean.modele}" 
+                        <p:dataTable 
+                                     id="tableTasks"
+                                     value="#{tasksMBean.modele}" 
                                      var="item"
                                      rows="10"
                                      paginator="true"
@@ -83,7 +83,7 @@
                                 <f:facet name="header">
                                     <h:outputText value="Supprimer"/>
                                 </f:facet>
-                                <p:commandButton value="Supprimer" actionListener="#{tasksMBean.removeTask(item)}"/>
+                                <p:commandButton value="Supprimer" actionListener="#{tasksMBean.removeTask(item)}" update="@([id$=tableTasks])"/>
                             </p:column>
                         </p:dataTable>
                     </h:form>

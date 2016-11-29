@@ -41,7 +41,9 @@
 
                     <h:form>
                         <h1><h:outputText value="Person List"/></h1>
-                        <p:dataTable value="#{personsMBean.modele}" 
+                        <p:dataTable 
+                                     id="tablePersons"
+                                     value="#{personsMBean.modele}" 
                                      var="item"
                                      rows="10"
                                      paginator="true"
@@ -70,9 +72,7 @@
                                 <f:facet name="header">
                                     <h:outputText value="Supprimer"/>
                                 </f:facet>
-                                <h:form>
-                                    <p:commandButton value="Supprimer" actionListener="#{personsMBean.removePerson(item)}"/>
-                                </h:form>
+                                <p:commandButton value="Supprimer" actionListener="#{personsMBean.removePerson(item)}" update="@([id$=tablePersons])"/>
                             </p:column>
                         </p:dataTable>
                     </h:form>
