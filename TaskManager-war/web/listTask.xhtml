@@ -21,18 +21,14 @@
             </ui:define>
 
             <ui:define name="left">
-                <h:form>
+                <h:form class="form-add-task">
                     <h3>Ajouter une tache</h3>
-                    <h:outputLabel value="Title"/>
-                    <h:inputText value="#{tasksMBean.title}"/>
-                    <h:outputLabel value="Status"/>
-                    <h:selectOneMenu value="#{tasksMBean.status}" >
+                    <p:inputText value="#{tasksMBean.title}" placeholder="Title" class="form-item"/>
+                    <p:selectOneMenu value="#{tasksMBean.status}" class="form-item">
                         <f:selectItems value="#{tasksMBean.allStatus}" var="status" itemValue="#{status}" itemLabel="#{status.name}"/>
-                    </h:selectOneMenu>
-                    <h:outputLabel value="Description"/>
-                    <h:inputTextarea value="#{tasksMBean.description}"/>
-                    <h:commandButton action="#{tasksMBean.createTask()}"
-                                     value="create"/>
+                    </p:selectOneMenu>
+                    <p:inputTextarea value="#{tasksMBean.description}" placeholder="Description" class="form-item"/>
+                    <p:commandButton action="#{tasksMBean.createTask()}" value="create" class="form-item"/>
                 </h:form>
             </ui:define>
 
