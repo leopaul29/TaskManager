@@ -5,54 +5,47 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui">
-
+    
     <f:event type="preRenderView"
              listener="#{tasksMBean.refreshCache()}"/>
-
+    
     <h:head>
         <title>Gestionnaire de Taches</title>
     </h:head>
     <h:body>
-
+        
         <ui:composition template="./resources/defaultTemplate.xhtml">
-
+            
             <ui:define name="top">
                 top
             </ui:define>
-
+            
             <ui:define name="left">
-
-                <p:fieldset legend="Create Task" style="margin-bottom:20px">
-                    <h:form>
-                        <h:outputLabel value="Title"/>
-                        <h:inputText value="#{tasksMBean.title}"/>
-                        <h:outputLabel value="Status"/>
-                        <h:selectOneMenu value="#{tasksMBean.status}" >
-                            <f:selectItems value="#{tasksMBean.allStatus}" var="status" itemValue="#{status}" itemLabel="#{status.name}"/>
-                        </h:selectOneMenu>
-                        <h:outputLabel value="Description"/>
-                        <h:inputTextarea value="#{tasksMBean.description}"/>
-                        <h:commandButton action="#{tasksMBean.createTask()}"
-                                         value="create"/>
-                    </h:form>
-                </p:fieldset>
-
+                <h:form class="form-add-task">
+                    <h3>Ajouter une tache</h3>
+                    <p:inputText value="#{tasksMBean.title}" placeholder="Title" class="form-item"/>
+                    <p:selectOneMenu value="#{tasksMBean.status}" class="form-item">
+                        <f:selectItems value="#{tasksMBean.allStatus}" var="status" itemValue="#{status}" itemLabel="#{status.name}"/>
+                    </p:selectOneMenu>
+                    <p:inputTextarea value="#{tasksMBean.description}" placeholder="Description" class="form-item"/>
+                    <p:commandButton action="#{tasksMBean.createTask()}" value="create" class="form-item"/>
+                </h:form>
+                
                 <p:fieldset legend="Chart Task" style="margin-bottom:20px" toggleable="true" toggleSpeed="500">
                     <h:form>
                         <p:chart id="pie1" type="pie" model="#{chartsMBean.pieModel1}" />
-
+                        
                         <p:commandButton value="Refresh Chart" icon="ui-icon-refresh" oncomplete="#{chartsMBean.updateChart()}"/>
                     </h:form>
                 </p:fieldset>
-
             </ui:define>
-
+            
             <ui:define name="content">
                 <h1>Gestionnaire de Taches</h1>
-
+                
                 <f:view>
-
-
+                    
+                    
                     <h:form>
                         <h1><h:outputText value="Task List"/></h1>
                         <p:growl id="msgs" showDetail="true"/>
@@ -70,10 +63,10 @@
                             emptyMessage="No Tasks found"
                             resizableColumns="true"
                             rowKey="#{item.id}" selection="#{tasksMBean.task}" selectionMode="single">
-
+                            
                             <p:ajax event="rowEdit" listener="#{tasksMBean.onRowEdit}" update="@form:msgs" />
                             <p:ajax event="rowEditCancel" listener="#{tasksMBean.onRowCancel}" update="@form:msgs" />
-
+                            
                             <p:column sortBy="#{item.id}">
                                 <f:facet name="header">
                                     <h:outputText value="Id"/>
@@ -107,41 +100,41 @@
                                     <f:facet name="input"><p:inputText value="#{item.description}" style="width:100%" label="Login"/></f:facet>
                                 </p:cellEditor>
                             </p:column>
-
+                            
                             <!-- COLUMN EDIT ROW -->
                             <p:column style="width:32px">
                                 <p:rowEditor/>
                             </p:column>
                         </p:dataTable>
-
+                        
                         <!-- BEGIN CLICK DROIT MENU -->
                         <p:contextMenu for="tableTasks">
                             <p:menuitem value="View" update="taskDetail" icon="ui-icon-search" oncomplete="PF('taskDialog').show()"/>
                             <p:menuitem value="Delete" update="@([id$=tableTasks])" icon="ui-icon-trash" oncomplete="PF('deleteTask').show()"/>
                         </p:contextMenu>
                         <!-- END CLICK DROIT MENU -->
-
+                        
                         <!-- BEGIN DIALOG TASKINFO -->
                         <p:dialog header="Task Info" widgetVar="taskDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                             <p:outputPanel id="taskDetail" style="text-align:center;">
                                 <p:panelGrid  columns="2" rendered="#{not empty tasksMBean.task}" columnClasses="label,value">
-
+                                    
                                     <h:outputText value="Id" />
                                     <h:outputText value="#{tasksMBean.task.id}" />
-
+                                    
                                     <h:outputText value="Title" />
                                     <h:outputText value="#{tasksMBean.task.title}" />
-
+                                    
                                     <h:outputText value="Status" />
                                     <h:outputText value="#{tasksMBean.task.status}" />
-
+                                    
                                     <h:outputText value="Description" />
                                     <h:outputText value="#{tasksMBean.task.description}" />
                                 </p:panelGrid>
                             </p:outputPanel>
                         </p:dialog>
                         <!-- END DIALOG TASKINFO -->
-
+                        
                         <!-- BEGIN CONFIRMDIALOG DELETETASK -->
                         <h:form>
                             <p:confirmDialog id="deleteTask" header="Delete Task" severity="alert" widgetVar="deleteTask"
@@ -154,8 +147,8 @@
                             </p:confirmDialog>  
                         </h:form>
                         <!-- END CONFIRMDIALOG DELETETASK -->
-
-
+                        
+                        
                     </h:form>
                 </f:view>
             </ui:define>
