@@ -16,22 +16,23 @@ h1 {
     color: #D20005;
 }
 
-a:link, a:visited {
-  color: #045491;
-  font-weight : bold;
-  text-decoration: none;
-}
-
-a:link:hover, a:visited:hover  {
-  color: #045491;
-  font-weight : bold;
-  text-decoration : underline;
+a{
+    color: black;
+    text-decoration: none;
 }
 
 .inprogress {
-    background-color: red;
+    background-color: #d9534f;
 }
 
 .completed {
-    background-color: green;
+    background-color: #5cb85c;
+}
+
+.hidden{
+    display: none;
+}
+
+.ui-datatable-header{ 
+    background: #0275d8 !important;
 }
