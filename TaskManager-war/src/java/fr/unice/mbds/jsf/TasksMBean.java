@@ -21,6 +21,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.chart.PieChartModel;
 
 /**
  *
@@ -37,7 +38,7 @@ public class TasksMBean implements Serializable {
     private String title;
     private StatusEnum status;
     private String description;
-
+    
     public Task getTask() {
         return task;
     }
@@ -53,8 +54,8 @@ public class TasksMBean implements Serializable {
     public void setTitle(String title) {
         this.title = title;
     }
-    
-    public StatusEnum[] getAllStatus(){
+
+    public StatusEnum[] getAllStatus() {
         return StatusEnum.values();
     }
 
@@ -65,8 +66,8 @@ public class TasksMBean implements Serializable {
     public void setStatus(StatusEnum status) {
         this.status = status;
     }
-    
-    public String updateTask(Task task){
+
+    public String updateTask(Task task) {
         System.out.println("Update Task  : " + task.getId());
         try {
             tm.update(task);
@@ -74,10 +75,10 @@ public class TasksMBean implements Serializable {
         } catch (Exception ex) {
             Logger.getLogger(TasksMBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return "listTask?faces=redirect=true";
     }
-
+    
     public String getDescription() {
         return description;
     }
@@ -94,10 +95,10 @@ public class TasksMBean implements Serializable {
     public LazyDataModel<Task> getModele() {
         return modele;
     }
-    
+
     public TasksMBean() {
         modele = new LazyDataModel<Task>() {
-            
+
             @Override
             public List<Task> load(int start, int nb, String nomColonne, org.primefaces.model.SortOrder orderTri, Map<String, Object> filters) {
                 // On va requeter pour récupérer
@@ -134,14 +135,14 @@ public class TasksMBean implements Serializable {
 
     public String createTask() {
         System.out.println("TASK : JSF BEAN CREATETASK");
-        
+
         tm.createTask(title, status, description);
-        
+
         refreshCache();
         return "listTask?faces=redirect=true";
     }
 
-    public String removeTask(Task task){
+    public String removeTask(Task task) {
         System.out.println("Remove task: " + task.getId());
         try {
             tm.removeTask(task);
@@ -149,10 +150,10 @@ public class TasksMBean implements Serializable {
         } catch (Exception ex) {
             Logger.getLogger(TasksMBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return "listTask?faces=redirect=true";
     }
-    
+
     public String removeTask() {
         System.out.println("Remove task: " + task.getId());
         try {
@@ -161,15 +162,15 @@ public class TasksMBean implements Serializable {
         } catch (Exception ex) {
             Logger.getLogger(TasksMBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return "listTask?faces=redirect=true";
     }
-    
+
     public void onRowEdit(RowEditEvent event) {
         FacesMessage msg = new FacesMessage("Task Edited", "" + ((Task) event.getObject()).getId());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-     
+
     public void onRowCancel(RowEditEvent event) {
         FacesMessage msg = new FacesMessage("Task Cancelled", "" + ((Task) event.getObject()).getId());
         FacesContext.getCurrentInstance().addMessage(null, msg);
