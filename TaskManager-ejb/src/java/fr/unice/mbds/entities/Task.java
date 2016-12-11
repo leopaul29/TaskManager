@@ -117,7 +117,7 @@ public class Task implements Serializable {
 
     @Override
     public String toString() {
-        return "fr.unice.mbds.entities.Task[ id=" + id + " ]";
+        return "Task[ id=" + id + ";title="+title+";status="+status.toString()+";persons="+persons+" ]";
     }
     
 }

@@ -41,6 +41,7 @@
 
                     <h:form>
                         <h1><h:outputText value="Person List"/></h1>
+                        <p:growl id="msgs" showDetail="true"/>
                         <p:dataTable 
                                      id="tablePersons"
                                      value="#{personsMBean.modele}" 
@@ -49,18 +50,31 @@
                                      paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      rowsPerPageTemplate="5,10,15"
-                                     lazy="true">
+                                     lazy="true"
+                                     editable="true"
+                                     emptyMessage="No Person found">
+                            
+                            <p:ajax event="rowEdit" listener="#{personsMBean.onRowEdit}" update="@form:msgs" />
+                            <p:ajax event="rowEditCancel" listener="#{personsMBean.onRowCancel}" update="@form:msgs" />
+                            
                             <p:column sortBy="#{item.id}">
                                 <f:facet name="header">
                                     <h:outputText value="Id"/>
                                 </f:facet>
-                                <h:outputText value="#{item.id}"/>
+                                <h:outputText value="#{item.id}"/> 
                             </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Login"/>
-                                </f:facet>
-                                <h:outputText value="#{item.login}"/>
+                            
+                            <p:column style="width:32px;text-align: center">
+                                <p:commandButton update="@form:personDetail" oncomplete="PF('personDialog').show()" icon="ui-icon-search" title="View">
+                                    <f:setPropertyActionListener value="#{item}" target="#{personsMBean.person}" />
+                               </p:commandButton>
+                            </p:column>
+                            
+                            <p:column>                                
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{item.login}" /></f:facet>
+                                    <f:facet name="input"><p:inputText value="#{item.login}" style="width:100%" label="Login"/></f:facet>
+                                </p:cellEditor>
                             </p:column>
                             <p:column>
                                 <f:facet name="header">
@@ -74,7 +88,32 @@
                                 </f:facet>
                                 <p:commandButton value="Supprimer" actionListener="#{personsMBean.removePerson(item)}" update="@([id$=tablePersons])"/>
                             </p:column>
+                            
+                            <p:column style="width:32px">
+                                <p:rowEditor />
+                            </p:column>
                         </p:dataTable>
+                        
+                        
+                        
+                        <p:dialog header="Person Info" widgetVar="personDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                            <p:outputPanel id="personDetail" style="text-align:center;">
+                                <p:panelGrid  columns="2" rendered="#{not empty personsMBean.person}" columnClasses="label,value">
+
+                                    <h:outputText value="Id" />
+                                    <h:outputText value="#{personsMBean.person.id}" />
+
+                                    <h:outputText value="Login" />
+                                    <h:outputText value="#{personsMBean.person.login}" />
+
+                                    <h:outputText value="Password" />
+                                    <h:outputText value="#{personsMBean.person.password}" />
+                                </p:panelGrid>
+                            </p:outputPanel>
+                        </p:dialog>
+                        
+                        
+                        
                     </h:form>
                 </f:view>
             </ui:define>

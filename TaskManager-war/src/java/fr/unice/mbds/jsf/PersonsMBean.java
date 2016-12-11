@@ -6,6 +6,7 @@
 package fr.unice.mbds.jsf;
 
 import fr.unice.mbds.entities.Person;
+import fr.unice.mbds.entities.Task;
 import fr.unice.mbds.session.PersonsManager;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,8 +15,11 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.LazyDataModel;
 
 /**
@@ -29,9 +33,17 @@ public class PersonsMBean implements Serializable {
     @EJB
     private PersonsManager pm;
     private List<Person> listPerson = new ArrayList<>();
-    
+    private Person person = new Person();
     private String login;
     private String password;
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
 
     public String getLogin() {
         return login;
@@ -88,7 +100,7 @@ public class PersonsMBean implements Serializable {
 
         return listPerson;
     }
-
+    
     public void refreshCache() {
         System.out.println("PERSON : REGENERATE CACHE");
         listPerson = pm.findAll();
@@ -114,6 +126,16 @@ public class PersonsMBean implements Serializable {
         }
         
         return "listPerson?faces=redirect=true";
+    }
+    
+    public void onRowEdit(RowEditEvent event) {
+        FacesMessage msg = new FacesMessage("Person Edited", "" + ((Person) event.getObject()).getId());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+     
+    public void onRowCancel(RowEditEvent event) {
+        FacesMessage msg = new FacesMessage("Edit Cancelled", "" + ((Person) event.getObject()).getId());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
     
 }

@@ -5,6 +5,7 @@
  */
 package fr.unice.mbds.session;
 
+import fr.unice.mbds.entities.Person;
 import fr.unice.mbds.entities.Task;
 import fr.unice.mbds.status.StatusEnum;
 import java.util.ArrayList;
@@ -45,6 +46,13 @@ public class TasksManager {
         }
         
         return taskList;
+    }
+    
+    public Task findWithId(int id) {
+        Query q = em.createQuery("select t from Task t where t.id = :id");
+        q.setParameter("id", id);
+        
+        return (Task) q.getSingleResult();
     }
     
     public List<Task> findAll() {
@@ -100,7 +108,6 @@ public class TasksManager {
         
         return q.getResultList();
     }
-    
     
     public int count() {
         Query q = em.createQuery("select count(t) from Task t");
