@@ -4,7 +4,8 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <f:event type="preRenderView"
              listener="#{personsMBean.refreshCache()}"/>
@@ -132,6 +133,14 @@
 
                                     <h:outputText value="Lastname" />
                                     <h:outputText value="#{personsMBean.person.lastname}" />
+                                </p:panelGrid>
+
+                                <p:panelGrid  columns="3" columnClasses="label,value,status">
+                                    <c:forEach items="#{personsMBean.person.tasks}" var="task">
+                                        <h:outputText value="#{task.title}" />
+                                        <h:outputText value="#{task.description}" />
+                                        <h:outputText value="#{task.status}" />
+                                    </c:forEach>
                                 </p:panelGrid>
                             </p:outputPanel>
                         </p:dialog>
