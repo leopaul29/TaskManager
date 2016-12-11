@@ -9,7 +9,9 @@ import fr.unice.mbds.entities.Person;
 import fr.unice.mbds.entities.Task;
 import fr.unice.mbds.status.StatusEnum;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
@@ -68,7 +70,7 @@ public class TasksManager {
         return q.getResultList();
     }
     
-    public List<Task> findRange(int start, int nb, String nomColonne, String so) {
+    public List<Task> findRange(int start, int nb, String nomColonne, Map<String, Object> filters, String so) {
         System.out.println("TM nom col=" + nomColonne + " - sortOrder=" + so);
         if (nomColonne == null) {
             nomColonne = "id";
@@ -79,8 +81,29 @@ public class TasksManager {
             so = "DESC";
         }
         
-        String req = "select t from Task t order by t." + nomColonne + " " + so;
+        String req = "select t from Task t ";
+        
+        //Filter
+        if(filters != null && !filters.isEmpty()){
+            req += " where ";
+            Iterator<String> i = filters.keySet().iterator();
+            
+            //first
+            String key = i.next();
+            req += " t." + key + " like '%" + filters.get(key) + "%' ";
+            
+            //other element
+            while(i.hasNext()){
+                key = i.next();
+                req += " and t." + key + " like %" + filters.get(key) + "% ";
+            }
+        }
+        
+        //Order By
+        req += " order by t." + nomColonne + " " + so;
+        
         System.out.println("req : " + req);
+        
         Query q = em.createQuery(req);
         q.setFirstResult(start);
         q.setMaxResults(nb);

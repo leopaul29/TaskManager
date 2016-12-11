@@ -8,7 +8,9 @@ package fr.unice.mbds.session;
 import fr.unice.mbds.entities.Person;
 import fr.unice.mbds.entities.Task;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
@@ -65,7 +67,7 @@ public class PersonsManager {
         return q.getResultList();
     }
 
-    public List<Person> findRange(int start, int nb, String nomColonne, String so) {
+    public List<Person> findRange(int start, int nb, String nomColonne, Map<String, Object> filters, String so) {
         System.out.println("PM nom col=" + nomColonne + " - sortOrder=" + so);
         if (nomColonne == null) {
             nomColonne = "id";
@@ -76,7 +78,27 @@ public class PersonsManager {
             so = "DESC";
         }
 
-        String req = "select p from Person p order by p." + nomColonne + " " + so;
+        String req = "select p from Person p ";
+        
+        //Filter
+        if(filters != null && !filters.isEmpty()){
+            req += " where ";
+            Iterator<String> i = filters.keySet().iterator();
+            
+            //first
+            String key = i.next();
+            req += " p." + key + " like '%" + filters.get(key) + "%' ";
+            
+            //other element
+            while(i.hasNext()){
+                key = i.next();
+                req += " and p." + key + " like '%" + filters.get(key) + "%' ";
+            }
+        }
+        
+        //Order by
+        req += " order by p." + nomColonne + " " + so;
+        
         System.out.println("req : " + req);
         Query q = em.createQuery(req);
         q.setFirstResult(start);

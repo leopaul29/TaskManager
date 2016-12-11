@@ -106,7 +106,7 @@ public class TasksMBean implements Serializable {
                 System.out.println("LOAD start=" + start + " - nb=" + nb);
                 System.out.println("Nom col=" + nomColonne + " - tri=" + orderTri);
 
-                return tm.findRange(start, nb, nomColonne, orderTri.toString());
+                return tm.findRange(start, nb, nomColonne, filters, orderTri.toString());
             }
 
             @Override
