@@ -25,6 +25,10 @@
                     <h3>Ajouter une personne</h3>
                     <h:outputLabel value="login"/>
                     <h:inputText value="#{personsMBean.login}"/>
+                    <h:outputLabel value="firstname"/>
+                    <h:inputText value="#{personsMBean.firstname}"/>
+                    <h:outputLabel value="lastname"/>
+                    <h:inputText value="#{personsMBean.lastname}"/>
                     <h:outputLabel value="password"/>
                     <h:inputText value="#{personsMBean.password}"/>
                     <h:commandButton action="#{personsMBean.createPerson()}"
@@ -43,59 +47,72 @@
                         <h1><h:outputText value="Person List"/></h1>
                         <p:growl id="msgs" showDetail="true"/>
                         <p:dataTable 
-                                     id="tablePersons"
-                                     value="#{personsMBean.modele}" 
-                                     var="item"
-                                     rows="10"
-                                     paginator="true"
-                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                     rowsPerPageTemplate="5,10,15"
-                                     lazy="true"
-                                     editable="true"
-                                     emptyMessage="No Person found">
-                            
+                            id="tablePersons"
+                            value="#{personsMBean.modele}" 
+                            var="item"
+                            rows="10"
+                            paginator="true"
+                            paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                            rowsPerPageTemplate="5,10,15"
+                            lazy="true"
+                            editable="true"
+                            emptyMessage="No Person found"
+                            resizableColumns="true"
+                            rowKey="#{item.id}" selection="#{personsMBean.person}" selectionMode="single">
+
                             <p:ajax event="rowEdit" listener="#{personsMBean.onRowEdit}" update="@form:msgs" />
                             <p:ajax event="rowEditCancel" listener="#{personsMBean.onRowCancel}" update="@form:msgs" />
-                            
+
                             <p:column sortBy="#{item.id}">
                                 <f:facet name="header">
                                     <h:outputText value="Id"/>
                                 </f:facet>
                                 <h:outputText value="#{item.id}"/> 
                             </p:column>
-                            
-                            <p:column style="width:32px;text-align: center">
-                                <p:commandButton update="@form:personDetail" oncomplete="PF('personDialog').show()" icon="ui-icon-search" title="View">
-                                    <f:setPropertyActionListener value="#{item}" target="#{personsMBean.person}" />
-                               </p:commandButton>
-                            </p:column>
-                            
-                            <p:column>                                
+
+                            <p:column sortBy="#{item.login}">
+                                <f:facet name="header">
+                                    <h:outputText value="Login"/>
+                                </f:facet>
                                 <p:cellEditor>
                                     <f:facet name="output"><h:outputText value="#{item.login}" /></f:facet>
                                     <f:facet name="input"><p:inputText value="#{item.login}" style="width:100%" label="Login"/></f:facet>
                                 </p:cellEditor>
                             </p:column>
-                            <p:column>
+                            <p:column sortBy="#{item.firstname}">
                                 <f:facet name="header">
-                                    <h:outputText value="Password"/>
+                                    <h:outputText value="Firstname"/>
                                 </f:facet>
-                                <h:outputText value="#{item.password}"/>
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{item.firstname}" /></f:facet>
+                                    <f:facet name="input"><p:inputText value="#{item.firstname}" style="width:100%" label="Firstname"/></f:facet>
+                                </p:cellEditor>
                             </p:column>
-                            <p:column>
+                            <p:column sortBy="#{item.lastname}">
                                 <f:facet name="header">
-                                    <h:outputText value="Supprimer"/>
+                                    <h:outputText value="Lastname"/>
                                 </f:facet>
-                                <p:commandButton value="Supprimer" actionListener="#{personsMBean.removePerson(item)}" update="@([id$=tablePersons])"/>
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{item.lastname}" /></f:facet>
+                                    <f:facet name="input"><p:inputText value="#{item.lastname}" style="width:100%" label="Lastname"/></f:facet>
+                                </p:cellEditor>
                             </p:column>
-                            
+
+                            <!-- COLUMN EDIT ROW -->
                             <p:column style="width:32px">
-                                <p:rowEditor />
+                                <p:rowEditor/>
                             </p:column>
                         </p:dataTable>
-                        
-                        
-                        
+
+
+                        <!-- BEGIN CLICK DROIT MENU -->
+                        <p:contextMenu for="tablePersons">
+                            <p:menuitem value="View" update="personDetail" icon="ui-icon-search" oncomplete="PF('personDialog').show()"/>
+                            <p:menuitem value="Delete" update="@([id$=tablePersons])" icon="ui-icon-trash" oncomplete="PF('deletePerson').show()"/>
+                        </p:contextMenu>
+                        <!-- END CLICK DROIT MENU -->
+
+                        <!-- BEGIN DIALOG PERSONINFO -->
                         <p:dialog header="Person Info" widgetVar="personDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                             <p:outputPanel id="personDetail" style="text-align:center;">
                                 <p:panelGrid  columns="2" rendered="#{not empty personsMBean.person}" columnClasses="label,value">
@@ -106,14 +123,30 @@
                                     <h:outputText value="Login" />
                                     <h:outputText value="#{personsMBean.person.login}" />
 
-                                    <h:outputText value="Password" />
-                                    <h:outputText value="#{personsMBean.person.password}" />
+                                    <h:outputText value="Firstname" />
+                                    <h:outputText value="#{personsMBean.person.firstname}" />
+
+                                    <h:outputText value="Lastname" />
+                                    <h:outputText value="#{personsMBean.person.lastname}" />
                                 </p:panelGrid>
                             </p:outputPanel>
                         </p:dialog>
-                        
-                        
-                        
+                        <!-- END DIALOG PERSONINFO -->
+
+                        <!-- BEGIN CONFIRMDIALOG DELETEPERSON -->
+                        <h:form>
+                            <p:confirmDialog id="deletePerson" header="Delete Person" severity="alert" widgetVar="deletePerson"
+                                             showEffect="fade" hideEffect="fade"
+                                             message="Voulez-vous supprimer cette personne ?">
+                                <p:commandButton id="confirm" value="Yes" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+                                                 update="@([id$=tablePersons])" oncomplete="PF('deletePerson').hide()" actionListener="#{personsMBean.removePerson}" />  
+                                <p:commandButton id="decline" value="No" type="button" icon="ui-icon-close" styleClass="ui-confirmdialog-no"
+                                                 onclick="deletePerson.hide()" />   
+                            </p:confirmDialog>  
+                        </h:form>
+                        <!-- END CONFIRMDIALOG DELETEPERSON -->
+
+
                     </h:form>
                 </f:view>
             </ui:define>

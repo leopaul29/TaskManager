@@ -26,8 +26,8 @@ public class PersonsManager {
     @PersistenceContext(unitName = "TaskManager-ejbPU")
     private EntityManager em;
 
-    public void createPerson(String login, String password) {
-        Person p = new Person(login, password);
+    public void createPerson(String login, String password, String firstname, String lastname) {
+        Person p = new Person(login, password, firstname, lastname);
         createPerson(p);
     }
 
@@ -51,7 +51,7 @@ public class PersonsManager {
         List<Person> personList = new ArrayList();
 
         for (int i = 0; i < 80; i++) {
-            Person person = new Person("login" + i, "password" + i);
+            Person person = new Person("login" + i, "password" + i, "firstname" + i, "lastname" + i);
             personList.add(person);
             createPerson(person);
         }

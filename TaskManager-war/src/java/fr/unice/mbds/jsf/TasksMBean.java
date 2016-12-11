@@ -151,7 +151,4 @@ public class TasksMBean implements Serializable {
         return "listTask?faces=redirect=true";
     }
     
-    public List<Person> getPersonsByTask(Task task) {
-        return task.getPersons();
-    }
 }
