@@ -2,25 +2,79 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    
     <body>
-
+        
         <ui:composition template="./resources/defaultTemplate.xhtml">
-
+            
             <ui:define name="top">
                 top
             </ui:define>
-
+            
             <ui:define name="left">
                 left
             </ui:define>
-
+            
             <ui:define name="content">
-                content
+                <script type="text/javascript">
+                    function handleDrop(event, ui) {
+                        var droppedCar = ui.draggable;
+
+                        droppedCar.fadeOut('fast');
+
+                        console.log(event);
+                        console.log(ui);
+                    }
+                </script>
+                
+                <h:form>
+                    <p:remoteCommand name="onMouseDown" actionListener="#{taskTableMBean.onDragTask()}"/>
+                </h:form>
+                
+                <c:forEach items="#{taskTableMBean.allStatus}" var="status">
+                    <h:form id="form_#{status}" class="dashboard">
+                        
+                        
+                        <p:fieldset id="field_#{status}">
+                            <p:outputPanel id="dropArea">
+                                <p:dataTable
+                                    value="#{taskTableMBean.getModel(status)}" var="task"
+                                    id="table_#{status}" 
+                                    rows="5"
+                                    paginator="true"
+                                    paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                    rowsPerPageTemplate="5,10,15" 
+                                    lazy="true">
+                                    
+                                    <p:column headerText="#{status.name}">
+                                        <h:commandLink onmousedown="onMouseDown([{ name: 'idTask', value: '#{task.id}' }])">
+                                            <p:panel id="panel" header="#{task.title}">
+                                                <h:outputText value="#{task.description}" />
+                                            </p:panel>
+                                            <p:draggable for="panel" revert="true" opacity="0.3" helper="clone" />
+                                        </h:commandLink>
+                                        
+                                    </p:column>
+                                </p:dataTable>
+                            </p:outputPanel>
+                        </p:fieldset>
+                    </h:form>
+                    
+                    <p:droppable for=":form_#{status}:field_#{status}"
+                                tolerance="touch" 
+                                activeStyleClass="ui-state-highlight"
+                                onDrop="handleDrop">
+                        <p:ajax listener="#{taskTableMBean.onTaskDrop(status)}" update="#{taskTableMBean.idUpdateAll}"/>
+                   </p:droppable>
+                    
+                </c:forEach>
             </ui:define>
-
         </ui:composition>
-
+        
+        
     </body>
 </html>

@@ -1,0 +1,25 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 4 déc. 2016, 02:03:05
+    Author     : 53js-Seb
+*/
+
+
+.dashboard{
+    white-space: nowrap;
+    margin-bottom: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 10px;
+}
+
+.task-table{
+    display: inline-block;
+    vertical-align: top;
+    width: 300px;
+}
+

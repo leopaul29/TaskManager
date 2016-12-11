@@ -141,5 +141,4 @@ public class TasksMBean implements Serializable {
         
         return "listTask?faces=redirect=true";
     }
-    
 }

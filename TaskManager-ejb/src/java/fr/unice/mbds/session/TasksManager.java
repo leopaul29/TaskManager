@@ -53,6 +53,13 @@ public class TasksManager {
         return q.getResultList();
     }
     
+    public List<Task> findWithStatus(StatusEnum status){
+        Query q = em.createQuery("select t from Task t where t.status = :status");
+        q.setParameter("status", status);
+        
+        return q.getResultList();
+    }
+    
     public List<Task> findRange(int start, int nb, String nomColonne, String so) {
         System.out.println("TM nom col=" + nomColonne + " - sortOrder=" + so);
         if (nomColonne == null) {
@@ -73,8 +80,38 @@ public class TasksManager {
         return q.getResultList();
     }
     
+    public List<Task> findRangeWithStatus(StatusEnum status, int start, int nb, String nomColonne, String so) {
+        System.out.println("TM nom col=" + nomColonne + " - sortOrder=" + so);
+        if (nomColonne == null) {
+            nomColonne = "id";
+        }
+        if (so.equals("ASCENDING")) {
+            so = "ASC";
+        } else {
+            so = "DESC";
+        }
+        
+        String req = "select t from Task t where t.status = :status order by t." + nomColonne + " " + so;
+        System.out.println("req : " + req);
+        Query q = em.createQuery(req);
+        q.setParameter("status", status);
+        q.setFirstResult(start);
+        q.setMaxResults(nb);
+        
+        return q.getResultList();
+    }
+    
+    
     public int count() {
         Query q = em.createQuery("select count(t) from Task t");
+        Number n = (Number) q.getSingleResult();
+        return n.intValue();
+    }
+    
+    public int countStatus(StatusEnum status){
+        Query q = em.createQuery("select count(t) from Task t where t.status = :status");
+        q.setParameter("status", status);
+        
         Number n = (Number) q.getSingleResult();
         return n.intValue();
     }
@@ -82,6 +119,11 @@ public class TasksManager {
     public void removeTask(Task task) throws Exception{
         Task t = em.merge(task);
         em.remove(t);
+    }
+    
+    public void setStatus(Integer id, StatusEnum status) throws Exception{
+        Task task = em.find(Task.class, id);
+        task.setStatus(status);
     }
     
     public Task update(Task task) throws Exception{
