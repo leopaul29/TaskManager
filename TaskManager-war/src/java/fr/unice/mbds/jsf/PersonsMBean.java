@@ -99,7 +99,7 @@ public class PersonsMBean implements Serializable {
                 System.out.println("LOAD start=" + start + " - nb=" + nb);
                 System.out.println("Nom col=" + nomColonne + " - tri=" + orderTri);
 
-                return pm.findRange(start, nb, nomColonne, orderTri.toString());
+                return pm.findRange(start, nb, nomColonne, filters, orderTri.toString());
             }
 
             @Override

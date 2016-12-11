@@ -80,7 +80,7 @@
                                 </f:facet>
                                 <h:outputText value="#{item.id}"/>
                             </p:column>
-                            <p:column>
+                            <p:column sortBy="#{item.title}" filterBy="#{item.title}">
                                 <f:facet name="header">
                                     <h:outputText value="Title"/>
                                 </f:facet>
