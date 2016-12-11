@@ -35,30 +35,27 @@
                             <h:outputLabel id="status" value="#{task.status}" title="Status" />
                             
 
-
-                            <h:form>
-                                <h1><h:outputText value="List"/></h1>
-                                <h:dataTable value="#{taskTableMBean.getPersonsByTask(task)}" var="item">
-                                    <h:column>
-                                        <f:facet name="header">
-                                            <h:outputText value="Login"/>
-                                        </f:facet>
-                                        <h:outputText value="#{item.login}"/>
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">
-                                            <h:outputText value="Password"/>
-                                        </f:facet>
-                                        <h:outputText value="#{item.password}"/>
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">
-                                            <h:outputText value="Id"/>
-                                        </f:facet>
-                                        <h:outputText value="#{item.id}"/>
-                                    </h:column>
-                                </h:dataTable>
-                            </h:form>
+                            <h1><h:outputText value="List"/></h1>
+                            <h:dataTable value="#(}" var="item">
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Login"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.login}"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Password"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.password}"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Id"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.id}"/>
+                                </h:column>
+                            </h:dataTable>
 
                         </h:panelGrid>
                 </f:view>

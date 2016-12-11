@@ -8,6 +8,7 @@ package fr.unice.mbds.entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,14 +30,20 @@ public class Person implements Serializable {
     
     private String password;
     
-    @ManyToMany
+    private String firstname;
+    
+    private String lastname;
+    
+    @ManyToMany(cascade = CascadeType.MERGE)
     private List<Task> tasks = new ArrayList<>();
     
     public Person(){}
     
-    public Person(String login, String password){
+    public Person(String login, String password, String firstname, String lastname){
         this.login = login;
         this.password = password;
+        this.firstname = firstname;
+        this.lastname = lastname;
     }
     
     public String getLogin() {
@@ -53,6 +60,22 @@ public class Person implements Serializable {
     
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
     
     public List<Task> getTasks() {

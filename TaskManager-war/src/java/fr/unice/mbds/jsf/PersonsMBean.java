@@ -36,6 +36,8 @@ public class PersonsMBean implements Serializable {
     private Person person = new Person();
     private String login;
     private String password;
+    private String firstname;
+    private String lastname;
 
     public Person getPerson() {
         return person;
@@ -59,6 +61,22 @@ public class PersonsMBean implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
     
     /**
@@ -110,13 +128,25 @@ public class PersonsMBean implements Serializable {
     public String createPerson() {
         System.out.println("PERSON : JSF BEAN CREATEPERSON");
         
-        pm.createPerson(login, password);
+        pm.createPerson(login, password, firstname, lastname);
         
         refreshCache();
         return "listPerson?faces=redirect=true";
     }
     
     public String removePerson(Person person){
+        System.out.println("Remove person: " + person.getId());
+        try {
+            pm.removePerson(person);
+            refreshCache();
+        } catch (Exception ex) {
+            Logger.getLogger(PersonsMBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return "listPerson?faces=redirect=true";
+    }
+    
+    public String removePerson() {
         System.out.println("Remove person: " + person.getId());
         try {
             pm.removePerson(person);
