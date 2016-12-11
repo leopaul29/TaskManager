@@ -5,7 +5,6 @@
  */
 package fr.unice.mbds.jsf;
 
-import fr.unice.mbds.entities.Person;
 import fr.unice.mbds.entities.Task;
 import fr.unice.mbds.session.TasksManager;
 import fr.unice.mbds.status.StatusEnum;
@@ -16,8 +15,11 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.LazyDataModel;
 
 /**
@@ -151,4 +153,25 @@ public class TasksMBean implements Serializable {
         return "listTask?faces=redirect=true";
     }
     
+    public String removeTask() {
+        System.out.println("Remove task: " + task.getId());
+        try {
+            tm.removeTask(task);
+            refreshCache();
+        } catch (Exception ex) {
+            Logger.getLogger(TasksMBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return "listTask?faces=redirect=true";
+    }
+    
+    public void onRowEdit(RowEditEvent event) {
+        FacesMessage msg = new FacesMessage("Task Edited", "" + ((Task) event.getObject()).getId());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+     
+    public void onRowCancel(RowEditEvent event) {
+        FacesMessage msg = new FacesMessage("Task Cancelled", "" + ((Task) event.getObject()).getId());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
 }

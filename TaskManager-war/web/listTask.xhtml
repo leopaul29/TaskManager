@@ -13,7 +13,7 @@
         <title>Gestionnaire de Taches</title>
     </h:head>
     <h:body>
-        
+
         <ui:composition template="./resources/defaultTemplate.xhtml">
 
             <ui:define name="top">
@@ -39,20 +39,30 @@
             <ui:define name="content">
                 <h1>Gestionnaire de Taches</h1>
 
-
                 <f:view>
+
+
                     <h:form>
                         <h1><h:outputText value="Task List"/></h1>
+                        <p:growl id="msgs" showDetail="true"/>
                         <p:dataTable 
-                                     id="tableTasks"
-                                     value="#{tasksMBean.modele}" 
-                                     var="item"
-                                     rows="10"
-                                     paginator="true"
-                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                     rowsPerPageTemplate="5,10,15"
-                                     lazy="true"
-                                     rowStyleClass="#{item.status == 'IN_PROGRESS' ? 'inprogress' : item.status == 'COMPLETED' ? 'completed' : null}">
+                            id="tableTasks"
+                            value="#{tasksMBean.modele}" 
+                            var="item"
+                            rows="10"
+                            paginator="true"
+                            paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                            rowsPerPageTemplate="5,10,15"
+                            lazy="true"
+                            rowStyleClass="#{item.status == 'IN_PROGRESS' ? 'inprogress' : item.status == 'COMPLETED' ? 'completed' : null}"
+                            editable="true"
+                            emptyMessage="No Tasks found"
+                            resizableColumns="true"
+                            rowKey="#{item.id}" selection="#{tasksMBean.task}" selectionMode="single">
+
+                            <p:ajax event="rowEdit" listener="#{tasksMBean.onRowEdit}" update="@form:msgs" />
+                            <p:ajax event="rowEditCancel" listener="#{tasksMBean.onRowCancel}" update="@form:msgs" />
+
                             <p:column sortBy="#{item.id}">
                                 <f:facet name="header">
                                     <h:outputText value="Id"/>
@@ -63,7 +73,10 @@
                                 <f:facet name="header">
                                     <h:outputText value="Title"/>
                                 </f:facet>
-                                <h:outputText value="#{item.title}"/>
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{item.title}" /></f:facet>
+                                    <f:facet name="input"><p:inputText value="#{item.title}" style="width:100%" label="Login"/></f:facet>
+                                </p:cellEditor>
                             </p:column>
                             <p:column>
                                 <f:facet name="header">
@@ -78,15 +91,60 @@
                                 <f:facet name="header">
                                     <h:outputText value="Description"/>
                                 </f:facet>
-                                <h:outputText value="#{item.description}"/>
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{item.description}" /></f:facet>
+                                    <f:facet name="input"><p:inputText value="#{item.description}" style="width:100%" label="Login"/></f:facet>
+                                </p:cellEditor>
                             </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Supprimer"/>
-                                </f:facet>
-                                <p:commandButton value="Supprimer" actionListener="#{tasksMBean.removeTask(item)}" update="@([id$=tableTasks])"/>
+                            
+                            <!-- COLUMN EDIT ROW -->
+                            <p:column style="width:32px">
+                                <p:rowEditor/>
                             </p:column>
                         </p:dataTable>
+                        
+                        <!-- BEGIN CLICK DROIT MENU -->
+                        <p:contextMenu for="tableTasks">
+                            <p:menuitem value="View" update="taskDetail" icon="ui-icon-search" oncomplete="PF('taskDialog').show()"/>
+                            <p:menuitem value="Delete" update="@([id$=tableTasks])" icon="ui-icon-trash" oncomplete="PF('deleteTask').show()"/>
+                        </p:contextMenu>
+                        <!-- END CLICK DROIT MENU -->
+
+                        <!-- BEGIN DIALOG TASKINFO -->
+                        <p:dialog header="Person Info" widgetVar="taskDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                            <p:outputPanel id="taskDetail" style="text-align:center;">
+                                <p:panelGrid  columns="2" rendered="#{not empty tasksMBean.task}" columnClasses="label,value">
+
+                                    <h:outputText value="Id" />
+                                    <h:outputText value="#{tasksMBean.task.id}" />
+
+                                    <h:outputText value="Title" />
+                                    <h:outputText value="#{tasksMBean.task.title}" />
+
+                                    <h:outputText value="Status" />
+                                    <h:outputText value="#{tasksMBean.task.status}" />
+
+                                    <h:outputText value="Description" />
+                                    <h:outputText value="#{tasksMBean.task.description}" />
+                                </p:panelGrid>
+                            </p:outputPanel>
+                        </p:dialog>
+                        <!-- END DIALOG TASKINFO -->
+
+                        <!-- BEGIN CONFIRMDIALOG DELETETASK -->
+                        <h:form>
+                            <p:confirmDialog id="deleteTask" header="Delete Task" severity="alert" widgetVar="deleteTask"
+                                             showEffect="fade" hideEffect="fade"
+                                             message="Voulez-vous supprimer cette tache ?">
+                                <p:commandButton id="confirm" value="Yes" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+                                                 update="@([id$=tableTasks])" oncomplete="PF('deleteTask').hide()" actionListener="#{tasksMBean.removeTask}" />  
+                                <p:commandButton id="decline" value="No" type="button" icon="ui-icon-close" styleClass="ui-confirmdialog-no"
+                                                 onclick="deleteTask.hide()" />   
+                            </p:confirmDialog>  
+                        </h:form>
+                        <!-- END CONFIRMDIALOG DELETETASK -->
+
+
                     </h:form>
                 </f:view>
             </ui:define>
