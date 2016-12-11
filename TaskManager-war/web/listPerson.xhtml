@@ -111,6 +111,7 @@
                         <!-- BEGIN CLICK DROIT MENU -->
                         <p:contextMenu for="tablePersons">
                             <p:menuitem value="View" update="personDetail" icon="ui-icon-search" oncomplete="PF('personDialog').show()"/>
+                            <p:menuitem value="Add task" update="tasksDialog" icon="ui-icon-plus" oncomplete="PF('tasksDialog').show()"/>
                             <p:menuitem value="Delete" update="@([id$=tablePersons])" icon="ui-icon-trash" oncomplete="PF('deletePerson').show()"/>
                         </p:contextMenu>
                         <!-- END CLICK DROIT MENU -->
@@ -132,6 +133,43 @@
                                     <h:outputText value="Lastname" />
                                     <h:outputText value="#{personsMBean.person.lastname}" />
                                 </p:panelGrid>
+                            </p:outputPanel>
+                        </p:dialog>
+                        <!-- END DIALOG PERSONINFO -->
+
+                        <!-- BEGIN DIALOG LISTTASKS -->
+                        <p:dialog header="List Task" widgetVar="tasksDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                            <p:outputPanel id="tasksDialog" style="text-align:center;">
+
+                                <p:dataTable 
+                                    id="tableTasks"
+                                    value="#{tasksMBean.modele}" 
+                                    var="item"
+                                    rows="10"
+                                    paginator="true"
+                                    paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                    rowsPerPageTemplate="5,10,15"
+                                    lazy="true"
+                                    emptyMessage="No Persons found"
+                                    rowKey="#{item.id}" selection="#{tasksMBean.selectedTask}">
+                                    <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                                    <p:column sortBy="#{item.id}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Id"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.id}"/> 
+                                    </p:column>
+
+                                    <p:column sortBy="#{item.title}" filterBy="#{item.title}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Title"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.title}"/> 
+                                    </p:column>
+                                    <f:facet name="footer">
+                                        <p:commandButton process="tableTasks" actionListener="#{personsMBean.addTask(tasksMBean.selectedTask)}"  value="Add" oncomplete="PF('tasksDialog').hide()"/>
+                                    </f:facet>
+                                </p:dataTable>
                             </p:outputPanel>
                         </p:dialog>
                         <!-- END DIALOG PERSONINFO -->

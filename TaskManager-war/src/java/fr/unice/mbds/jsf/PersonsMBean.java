@@ -168,4 +168,13 @@ public class PersonsMBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
     
+    public void addTask(List<Task> tasks) {
+        System.out.println("TASKS : " + tasks);
+        System.out.println("PERSON : " + person);
+        for (Task task : tasks) {
+            person.addTask(task);
+        }
+        
+        System.out.println("PERSON TASKS : " +person.getTasks());
+    }
 }

@@ -21,7 +21,6 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.chart.PieChartModel;
 
 /**
  *
@@ -34,10 +33,19 @@ public class TasksMBean implements Serializable {
     @EJB
     private TasksManager tm;
     private List<Task> listTask = new ArrayList<>();
+    private List<Task> selectedTask = new ArrayList<>();
     private Task task;
     private String title;
     private StatusEnum status;
     private String description;
+
+    public List<Task> getSelectedTask() {
+        return selectedTask;
+    }
+
+    public void setSelectedTask(List<Task> selectedTask) {
+        this.selectedTask = selectedTask;
+    }
     
     public Task getTask() {
         return task;
