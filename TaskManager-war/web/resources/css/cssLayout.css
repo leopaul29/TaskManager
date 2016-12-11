@@ -1,10 +1,10 @@
 
 #top {
     position: relative;
-    background-color: #036fab;
     color: white;
     padding: 5px;
-    margin: 0px 0px 10px 0px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 #bottom {
@@ -16,7 +16,6 @@
 
 #left {
     float: left;
-    background-color: #ece3a5;
     padding: 5px;
     width: 150px;
 }
@@ -46,16 +45,17 @@
     margin: 0px 170px 0px 170px;
 }
 
-#top a:link, #top a:visited {
-  color: white;
-  font-weight : bold;
-  text-decoration: none;
+.title {
+    font-size: 25px ;
+    font-weight : bold;
+    margin-left: 20px;
 }
 
-#top a:link:hover, #top a:visited:hover  {
-  color: black;
-  font-weight : bold;
-  text-decoration : underline;
+.title-bar{
+    background: #373a3c;
 }
 
-
+.title-bar span{
+    color: white;
+    font-size: 13px;
+}

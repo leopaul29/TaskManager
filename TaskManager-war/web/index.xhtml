@@ -10,14 +10,8 @@
     <body>
         
         <ui:composition template="./resources/defaultTemplate.xhtml">
+            <ui:param name="hideLeft" value="true" />
             
-            <ui:define name="top">
-                top
-            </ui:define>
-            
-            <ui:define name="left">
-                left
-            </ui:define>
             
             <ui:define name="content">
                 <script type="text/javascript">
@@ -35,46 +29,43 @@
                     <p:remoteCommand name="onMouseDown" actionListener="#{taskTableMBean.onDragTask()}"/>
                 </h:form>
                 
-                <c:forEach items="#{taskTableMBean.allStatus}" var="status">
-                    <h:form id="form_#{status}" class="dashboard">
-                        
-                        
-                        <p:fieldset id="field_#{status}">
-                            <p:outputPanel id="dropArea">
-                                <p:dataTable
-                                    value="#{taskTableMBean.getModel(status)}" var="task"
-                                    id="table_#{status}" 
-                                    rows="5"
-                                    paginator="true"
-                                    paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                    rowsPerPageTemplate="5,10,15" 
-                                    lazy="true">
-                                    
-                                    <p:column headerText="#{status.name}">
-                                        <h:commandLink onmousedown="onMouseDown([{ name: 'idTask', value: '#{task.id}' }])">
-                                            <p:panel id="panel" header="#{task.title}">
-                                                <p:link outcome="displayTask" value="link1">
-                                                    <f:param name="id" value="#{task.id}"/>
-                                                </p:link>
-                                                <h:outputText value="#{task.description}" />
-                                            </p:panel>
-                                            <p:draggable for="panel" revert="true" opacity="0.3" helper="clone" />
-                                        </h:commandLink>
+                <div class="dashboard">
+                    <c:forEach items="#{taskTableMBean.allStatus}" var="status">
+                        <h:form id="form_#{status}" class="task-table">
+                            <p:fieldset id="field_#{status}">
+                                <p:outputPanel id="dropArea">
+                                    <p:dataTable
+                                        value="#{taskTableMBean.getModel(status)}" var="task"
+                                        id="table_#{status}" 
+                                        rows="7"
+                                        paginator="true"
+                                        pageLinks="5"
+                                        paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                        lazy="true">
                                         
-                                    </p:column>
-                                </p:dataTable>
-                            </p:outputPanel>
-                        </p:fieldset>
-                    </h:form>
-                    
-                    <p:droppable for=":form_#{status}:field_#{status}"
-                                tolerance="touch" 
-                                activeStyleClass="ui-state-highlight"
-                                onDrop="handleDrop">
-                        <p:ajax listener="#{taskTableMBean.onTaskDrop(status)}" update="#{taskTableMBean.idUpdateAll}"/>
-                   </p:droppable>
-                    
-                </c:forEach>
+                                        <p:column headerText="#{status.name}">
+                                            <h:commandLink onmousedown="onMouseDown([{ name: 'idTask', value: '#{task.id}' }])">
+                                                <p:panel id="panel" header="#{task.title}">
+                                                    <h:outputText value="#{task.description}" />
+                                                </p:panel>
+                                                <p:draggable for="panel" revert="true" opacity="0.3" helper="clone" />
+                                            </h:commandLink>
+                                            
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:outputPanel>
+                            </p:fieldset>
+                        </h:form>
+                        
+                        <p:droppable for=":form_#{status}:field_#{status}"
+                                     tolerance="touch" 
+                                     activeStyleClass="ui-state-highlight"
+                                     onDrop="handleDrop">
+                            <p:ajax listener="#{taskTableMBean.onTaskDrop(status)}" update="#{taskTableMBean.idUpdateAll}"/>
+                        </p:droppable>
+                        
+                    </c:forEach>
+                </div>
             </ui:define>
         </ui:composition>
         
