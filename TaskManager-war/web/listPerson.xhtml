@@ -21,19 +21,22 @@
             </ui:define>
 
             <ui:define name="left">
-                <h:form>
-                    <h3>Ajouter une personne</h3>
-                    <h:outputLabel value="login"/>
-                    <h:inputText value="#{personsMBean.login}"/>
-                    <h:outputLabel value="firstname"/>
-                    <h:inputText value="#{personsMBean.firstname}"/>
-                    <h:outputLabel value="lastname"/>
-                    <h:inputText value="#{personsMBean.lastname}"/>
-                    <h:outputLabel value="password"/>
-                    <h:inputText value="#{personsMBean.password}"/>
-                    <h:commandButton action="#{personsMBean.createPerson()}"
-                                     value="create"/>
-                </h:form>
+
+                <p:fieldset legend="Create Task" style="margin-bottom:20px">
+                    <h:form>
+                        <h3>Ajouter une personne</h3>
+                        <h:outputLabel value="login"/>
+                        <h:inputText value="#{personsMBean.login}"/>
+                        <h:outputLabel value="firstname"/>
+                        <h:inputText value="#{personsMBean.firstname}"/>
+                        <h:outputLabel value="lastname"/>
+                        <h:inputText value="#{personsMBean.lastname}"/>
+                        <h:outputLabel value="password"/>
+                        <h:inputText value="#{personsMBean.password}"/>
+                        <h:commandButton action="#{personsMBean.createPerson()}"
+                                         value="create"/>
+                    </h:form>
+                </p:fieldset>
 
             </ui:define>
 
