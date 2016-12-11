@@ -43,9 +43,7 @@
             <ui:define name="content">
                 <h1>Gestionnaire de Taches</h1>
                 
-                <f:view>
-                    
-                    
+                <f:view>                    
                     <h:form>
                         <h1><h:outputText value="Task List"/></h1>
                         <p:growl id="msgs" showDetail="true"/>
@@ -110,7 +108,8 @@
                         <!-- BEGIN CLICK DROIT MENU -->
                         <p:contextMenu for="tableTasks">
                             <p:menuitem value="View" update="taskDetail" icon="ui-icon-search" oncomplete="PF('taskDialog').show()"/>
-                            <p:menuitem value="Delete" update="@([id$=tableTasks])" icon="ui-icon-trash" oncomplete="PF('deleteTask').show()"/>
+                            <p:menuitem value="Add person" update="@([id$=addPerson])" icon="ui-icon-plus" oncomplete="PF('addPerson').show()"/>
+                            <p:menuitem value="Delete" update="@([id$=tableTasks])" icon="ui-icon-trash" oncomplete="PF('deleteTask').show()"/> 
                         </p:contextMenu>
                         <!-- END CLICK DROIT MENU -->
                         
@@ -147,6 +146,62 @@
                             </p:confirmDialog>  
                         </h:form>
                         <!-- END CONFIRMDIALOG DELETETASK -->
+                        
+                        <!-- BEGIN ADD PERSON -->
+                        
+                        <h:form>
+                            <p:confirmDialog id="addPerson" header="Add Person" severity="alert" widgetVar="addPerson"
+                                             showEffect="fade" hideEffect="fade"
+                                             message="Sélectionner les personnes à rajouter...">
+                                
+                                <p:dataTable 
+                                    id="tablePersons"
+                                    value="#{personsMBean.modele}" 
+                                    var="item"
+                                    rows="10"
+                                    paginator="true"
+                                    paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                    rowsPerPageTemplate="5,10,15"
+                                    lazy="true"
+                                    editable="true"
+                                    emptyMessage="No Persons found"
+                                    resizableColumns="true"
+                                    rowKey="#{item.id}" selection="#{tasksMBean.listPerson}" selectionMode="multiple">
+                                    
+                                    <p:column sortBy="#{item.id}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Id"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.id}"/> 
+                                    </p:column>
+                                    
+                                    <p:column sortBy="#{item.login}" filterBy="#{item.login}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Login"/>
+                                        </f:facet>
+                                    </p:column>
+                                    <p:column sortBy="#{item.firstname}" filterBy="#{item.firstname}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Firstname"/>
+                                        </f:facet>
+                                    </p:column>
+                                    <p:column sortBy="#{item.lastname}" filterBy="#{item.lastname}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Lastname"/>
+                                        </f:facet>
+                                    </p:column>
+                                </p:dataTable>
+                                
+                                
+                                
+                                <p:commandButton id="confirm" value="Yes" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+                                                 update="@([id$=tableTasks])" oncomplete="PF('addPerson').hide()" action="#{tasksMBean.addPersons}" />  
+                                <p:commandButton id="decline" value="No" type="button" icon="ui-icon-close" styleClass="ui-confirmdialog-no"
+                                                 oncomplete="PF('addPerson').hide()" />   
+                            </p:confirmDialog>  
+                        </h:form>
+                        
+                        <!-- END ADD PERSONN -->
                         
                         
                     </h:form>

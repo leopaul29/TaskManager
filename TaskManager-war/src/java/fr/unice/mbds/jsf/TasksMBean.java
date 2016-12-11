@@ -5,6 +5,7 @@
  */
 package fr.unice.mbds.jsf;
 
+import fr.unice.mbds.entities.Person;
 import fr.unice.mbds.entities.Task;
 import fr.unice.mbds.session.TasksManager;
 import fr.unice.mbds.status.StatusEnum;
@@ -38,6 +39,33 @@ public class TasksMBean implements Serializable {
     private String title;
     private StatusEnum status;
     private String description;
+    
+    private List<Person> listPerson = new ArrayList<>();
+    
+    public List<Person> getListPerson(){
+        return listPerson;
+    }
+     
+    public void setListPerson(List<Person> persons){
+        listPerson = persons;
+    }
+    
+    
+    public void addPersons(){
+        
+        System.out.println("AddPersons");
+        for(Person person : listPerson){
+            task.addPerson(person);
+        }
+        
+        try {
+            tm.update(task);
+        } catch (Exception ex) {
+            Logger.getLogger(TasksMBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        listPerson.clear();
+    }
     
     public Task getTask() {
         return task;
