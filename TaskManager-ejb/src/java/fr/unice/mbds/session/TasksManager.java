@@ -5,7 +5,6 @@
  */
 package fr.unice.mbds.session;
 
-import fr.unice.mbds.entities.Person;
 import fr.unice.mbds.entities.Task;
 import fr.unice.mbds.status.StatusEnum;
 import java.util.ArrayList;
