@@ -82,9 +82,9 @@
                                 <f:facet name="header">
                                     <h:outputText value="Status"/>
                                 </f:facet>
-                                <h:selectOneMenu value="#{item.status}">
+                                <h:selectOneMenu value="#{item.status}" >
                                     <f:selectItems value="#{tasksMBean.allStatus}" var="status" itemValue="#{status}" itemLabel="#{status.name}"/>
-                                    <f:ajax listener="#{tasksMBean.updateTask(item)}" />
+                                    <p:ajax listener="#{tasksMBean.updateTask(item)}" update="tableTasks"/>
                                 </h:selectOneMenu>
                             </p:column>
                             <p:column>
