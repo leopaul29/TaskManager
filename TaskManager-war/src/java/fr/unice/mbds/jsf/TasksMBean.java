@@ -144,7 +144,7 @@ public class TasksMBean implements Serializable {
         System.out.println("TASK : JSF BEAN CREATETASK");
 
         Task t = tm.createTask(title, status, description);
-        
+
         FacesMessage msg = new FacesMessage("Task Created", "" + t.getId());
         FacesContext.getCurrentInstance().addMessage(null, msg);
 
@@ -173,13 +173,19 @@ public class TasksMBean implements Serializable {
         } catch (Exception ex) {
             Logger.getLogger(TasksMBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return "listTask?faces=redirect=true";
     }
 
     public void onRowEdit(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Task Edited", "" + ((Task) event.getObject()).getId());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        try {
+            tm.update((Task) event.getObject());
+
+            FacesMessage msg = new FacesMessage("Task Edited", "" + ((Task) event.getObject()).getId());
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        } catch (Exception ex) {
+            Logger.getLogger(TasksMBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void onRowCancel(RowEditEvent event) {
@@ -195,7 +201,7 @@ public class TasksMBean implements Serializable {
             for (Person person : persons) {
                 task.addPerson(person);
             }
-            
+
             tm.update(task);
         } catch (Exception ex) {
             Logger.getLogger(TasksMBean.class.getName()).log(Level.SEVERE, null, ex);
