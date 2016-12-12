@@ -137,21 +137,12 @@ public class PersonsMBean implements Serializable {
     public String createPerson() {
         System.out.println("PERSON : JSF BEAN CREATEPERSON");
 
-        pm.createPerson(login, password, firstname, lastname);
-
+        Person p = pm.createPerson(login, password, firstname, lastname);
+        
+        FacesMessage msg = new FacesMessage("Person Created", "" + p.getId());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        
         refreshCache();
-        return "listPerson?faces=redirect=true";
-    }
-
-    public String removePerson(Person person) {
-        System.out.println("Remove person: " + person.getId());
-        try {
-            pm.removePerson(person);
-            refreshCache();
-        } catch (Exception ex) {
-            Logger.getLogger(PersonsMBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
         return "listPerson?faces=redirect=true";
     }
 
@@ -163,7 +154,7 @@ public class PersonsMBean implements Serializable {
         } catch (Exception ex) {
             Logger.getLogger(PersonsMBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+       
         return "listPerson?faces=redirect=true";
     }
 

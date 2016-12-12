@@ -143,7 +143,10 @@ public class TasksMBean implements Serializable {
     public String createTask() {
         System.out.println("TASK : JSF BEAN CREATETASK");
 
-        tm.createTask(title, status, description);
+        Task t = tm.createTask(title, status, description);
+        
+        FacesMessage msg = new FacesMessage("Task Created", "" + t.getId());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
 
         refreshCache();
         return "listTask?faces=redirect=true";
@@ -161,27 +164,16 @@ public class TasksMBean implements Serializable {
         return "listTask?faces=redirect=true";
     }
 
-    public String removeTask(Task task) {
-        System.out.println("Remove task: " + task.getId());
-        try {
-            tm.removeTask(task);
-            refreshCache();
-        } catch (Exception ex) {
-            Logger.getLogger(TasksMBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return "listTask?faces=redirect=true";
-    }
-
     public String removeTask() {
         System.out.println("Remove task: " + task.getId());
+        int idT = task.getId();
         try {
             tm.removeTask(task);
             refreshCache();
         } catch (Exception ex) {
             Logger.getLogger(TasksMBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
         return "listTask?faces=redirect=true";
     }
 
