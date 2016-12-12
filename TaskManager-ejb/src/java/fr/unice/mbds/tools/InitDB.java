@@ -44,7 +44,6 @@ public class InitDB {
             for( int i = 0; i < tasks.size()/2; i++){
                 Person person = null;
                 Task task = null;
-                System.out.println("coucou");
                 
                 do{
                     person = persons.get( (int) (Math.random()*persons.size()) );

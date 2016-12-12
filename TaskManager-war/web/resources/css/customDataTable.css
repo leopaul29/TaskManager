@@ -8,7 +8,7 @@ and open the template in the editor.
     Author     : 53js-Seb
 */
 
-.ui-widget-header, .ui-state-default{ 
+.ui-widget-header{ 
     background: #0275d8 !important;
     color: white !important;
 }
