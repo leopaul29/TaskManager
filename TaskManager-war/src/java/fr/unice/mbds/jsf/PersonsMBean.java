@@ -8,6 +8,7 @@ package fr.unice.mbds.jsf;
 import fr.unice.mbds.entities.Person;
 import fr.unice.mbds.entities.Task;
 import fr.unice.mbds.session.PersonsManager;
+import fr.unice.mbds.session.TasksManager;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,10 @@ public class PersonsMBean implements Serializable {
 
     @EJB
     private PersonsManager pm;
+    
+    @EJB
+    private TasksManager tm;
+    
     private List<Person> listPerson = new ArrayList<>();
     private List<Person> selectedPerson = new ArrayList<>();
     private Person person = new Person();
@@ -181,6 +186,7 @@ public class PersonsMBean implements Serializable {
         try {
             for (Task task : tasks) {
                 person.addTask(task);
+                task.addPerson(person);
             }
 
             pm.update(person);

@@ -58,6 +58,7 @@ public class InitDB {
                 
                 System.out.println(task.getTitle() + " " + person.getLogin());
                 pm.addTaskToPerson(person, task);
+                tm.addPersonToTask(task, person);
                 System.out.println(person);
             }
         } catch (Exception ex) {

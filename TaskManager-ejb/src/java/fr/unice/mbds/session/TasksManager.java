@@ -5,6 +5,7 @@
  */
 package fr.unice.mbds.session;
 
+import fr.unice.mbds.entities.Person;
 import fr.unice.mbds.entities.Task;
 import fr.unice.mbds.status.StatusEnum;
 import java.util.ArrayList;
@@ -158,5 +159,11 @@ public class TasksManager {
     
     public Task update(Task task) throws Exception{
         return em.merge(task);
+    }
+    
+    public Task addPersonToTask(Task task, Person person) throws Exception {
+        Task t = em.merge(task);
+        t.addPerson(person);
+        return t;
     }
 }
