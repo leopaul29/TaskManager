@@ -28,9 +28,10 @@ public class PersonsManager {
     @PersistenceContext(unitName = "TaskManager-ejbPU")
     private EntityManager em;
 
-    public void createPerson(String login, String password, String firstname, String lastname) {
+    public Person createPerson(String login, String password, String firstname, String lastname) {
         Person p = new Person(login, password, firstname, lastname);
         createPerson(p);
+        return p;
     }
 
     public void createPerson(Person person) {
