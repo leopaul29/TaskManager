@@ -35,7 +35,7 @@
                 <div class="dashboard">
                     <c:forEach items="#{taskTableMBean.allStatus}" var="status">
                         <h:form id="form_#{status}" class="task-table">
-                            <p:fieldset id="field_#{status}">
+                            <p:fieldset id="field_#{status}" class="field-datatable" >
                                 <p:outputPanel id="dropArea">
                                     <p:dataTable
                                         value="#{taskTableMBean.getModel(status)}" var="task"
