@@ -35,3 +35,7 @@ a{
 .ui-datatable-header{ 
     background: #0275d8 !important;
 }
+.ui-state-default {
+    background: white !important;
+    color: black !important;
+}
