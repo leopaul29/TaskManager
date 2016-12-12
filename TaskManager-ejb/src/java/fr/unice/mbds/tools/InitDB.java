@@ -9,6 +9,7 @@ import fr.unice.mbds.entities.Person;
 import fr.unice.mbds.entities.Task;
 import fr.unice.mbds.session.PersonsManager;
 import fr.unice.mbds.session.TasksManager;
+import fr.unice.mbds.status.StatusEnum;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -50,6 +51,10 @@ public class InitDB {
                     task = tasks.get( (int) (Math.random()*tasks.size()) );
                     System.out.println(!person.getTasks().contains(task)+ " ");
                 }while(person.getTasks().contains(task));
+                
+                //Random status
+                int indexStatus = (int) (Math.random() * StatusEnum.values().length);
+                task.setStatus(StatusEnum.values()[indexStatus]);
                 
                 System.out.println(task.getTitle() + " " + person.getLogin());
                 pm.addTaskToPerson(person, task);
