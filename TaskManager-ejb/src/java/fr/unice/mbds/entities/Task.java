@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -40,7 +41,7 @@ public class Task implements Serializable {
     @Enumerated(EnumType.STRING)
     private StatusEnum status = StatusEnum.NO_ATTRIBUTED;
     
-    @ManyToMany(mappedBy = "tasks")
+    @ManyToMany(mappedBy = "tasks", cascade = CascadeType.MERGE)
     private List<Person> persons = new ArrayList<>();
     
     public Task(){}

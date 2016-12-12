@@ -27,10 +27,11 @@ public class TasksManager {
     @PersistenceContext(unitName = "TaskManager-ejbPU")
     private EntityManager em;
 
-    public void createTask(String title, StatusEnum status, String description) {
+    public Task createTask(String title, StatusEnum status, String description) {
         Task t = new Task(title, description);
         t.setStatus(status);
         createTask(t);
+        return t;
     }
     
     public void createTask(Task task) {

@@ -26,12 +26,15 @@
                 <p:fieldset legend="Create Task" style="margin-bottom:20px">
                     <h:form class="form-add-task">
                         <h3>Ajouter une tache</h3>
-                        <p:inputText value="#{tasksMBean.title}" placeholder="Title" class="form-item"/>
-                        <p:selectOneMenu value="#{tasksMBean.status}" class="form-item">
+                        <h:outputLabel value="Title"/>
+                        <h:inputText value="#{tasksMBean.title}" class="form-item"/>
+                        <h:outputLabel value="Status"/>
+                        <h:selectOneMenu value="#{tasksMBean.status}" class="form-item">
                             <f:selectItems value="#{tasksMBean.allStatus}" var="status" itemValue="#{status}" itemLabel="#{status.name}"/>
-                        </p:selectOneMenu>
-                        <p:inputTextarea value="#{tasksMBean.description}" placeholder="Description" class="form-item"/>
-                        <p:commandButton action="#{tasksMBean.createTask()}" value="create" class="form-item"/>
+                        </h:selectOneMenu>
+                        <h:outputLabel value="Description"/>
+                        <h:inputTextarea value="#{tasksMBean.description}"  class="form-item"/>
+                        <h:commandButton action="#{tasksMBean.createTask()}" value="create" class="form-item"/>
                     </h:form>
                 </p:fieldset>
 
