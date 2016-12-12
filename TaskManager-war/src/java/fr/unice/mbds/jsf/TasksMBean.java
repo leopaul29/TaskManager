@@ -35,7 +35,7 @@ public class TasksMBean implements Serializable {
     private TasksManager tm;
     private List<Task> listTask = new ArrayList<>();
     private List<Task> selectedTask = new ArrayList<>();
-    private Task task;
+    private Task task = new Task();
     private String title;
     private StatusEnum status;
     private String description;
@@ -47,34 +47,17 @@ public class TasksMBean implements Serializable {
     public void setSelectedTask(List<Task> selectedTask) {
         this.selectedTask = selectedTask;
     }
-    
+
     private List<Person> listPerson = new ArrayList<>();
-    
-    public List<Person> getListPerson(){
+
+    public List<Person> getListPerson() {
         return listPerson;
     }
-     
-    public void setListPerson(List<Person> persons){
+
+    public void setListPerson(List<Person> persons) {
         listPerson = persons;
     }
-    
-    
-    public void addPersons(){
-        
-        System.out.println("AddPersons");
-        for(Person person : listPerson){
-            task.addPerson(person);
-        }
-        
-        try {
-            tm.update(task);
-        } catch (Exception ex) {
-            Logger.getLogger(TasksMBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        listPerson.clear();
-    }
-    
+
     public Task getTask() {
         return task;
     }
@@ -103,18 +86,6 @@ public class TasksMBean implements Serializable {
         this.status = status;
     }
 
-    public String updateTask(Task task) {
-        System.out.println("Update Task  : " + task.getId());
-        try {
-            tm.update(task);
-            refreshCache();
-        } catch (Exception ex) {
-            Logger.getLogger(TasksMBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return "listTask?faces=redirect=true";
-    }
-    
     public String getDescription() {
         return description;
     }
@@ -178,6 +149,18 @@ public class TasksMBean implements Serializable {
         return "listTask?faces=redirect=true";
     }
 
+    public String updateTask(Task task) {
+        System.out.println("Update Task  : " + task.getId());
+        try {
+            tm.update(task);
+            refreshCache();
+        } catch (Exception ex) {
+            Logger.getLogger(TasksMBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return "listTask?faces=redirect=true";
+    }
+
     public String removeTask(Task task) {
         System.out.println("Remove task: " + task.getId());
         try {
@@ -210,5 +193,23 @@ public class TasksMBean implements Serializable {
     public void onRowCancel(RowEditEvent event) {
         FacesMessage msg = new FacesMessage("Task Cancelled", "" + ((Task) event.getObject()).getId());
         FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public void addPerson(List<Person> persons) {
+        System.out.println("PERSONS : " + persons);
+        System.out.println("TASK : " + task);
+
+        try {
+            for (Person person : persons) {
+                task.addPerson(person);
+            }
+            
+            tm.update(task);
+        } catch (Exception ex) {
+            Logger.getLogger(TasksMBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        persons.clear();
+        System.out.println("PERSON TASKS : " + task.getPersons());
     }
 }

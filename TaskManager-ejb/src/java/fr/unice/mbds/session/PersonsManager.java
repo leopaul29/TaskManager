@@ -117,4 +117,8 @@ public class PersonsManager {
         Person p = em.merge(person);
         em.remove(p);
     }
+    
+    public Person update(Person person) throws Exception{
+        return em.merge(person);
+    }
 }

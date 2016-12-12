@@ -147,7 +147,7 @@
                         <!-- END DIALOG PERSONINFO -->
 
                         <!-- BEGIN DIALOG LISTTASKS -->
-                        <p:dialog header="List Task" widgetVar="tasksDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                        <p:dialog header="List Task" widgetVar="tasksDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" draggable="false">
                             <p:outputPanel id="tasksDialog" style="text-align:center;">
 
                                 <p:dataTable 
@@ -159,7 +159,7 @@
                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                     rowsPerPageTemplate="5,10,15"
                                     lazy="true"
-                                    emptyMessage="No Persons found"
+                                    emptyMessage="No Tasks found"
                                     rowKey="#{item.id}" selection="#{tasksMBean.selectedTask}">
                                     <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
                                     <p:column sortBy="#{item.id}">
@@ -169,19 +169,22 @@
                                         <h:outputText value="#{item.id}"/> 
                                     </p:column>
 
-                                    <p:column sortBy="#{item.title}" filterBy="#{item.title}">
+                                    <p:column sortBy="#{item.title}">
                                         <f:facet name="header">
                                             <h:outputText value="Title"/>
                                         </f:facet>
                                         <h:outputText value="#{item.title}"/> 
                                     </p:column>
                                     <f:facet name="footer">
-                                        <p:commandButton process="tableTasks" actionListener="#{personsMBean.addTask(tasksMBean.selectedTask)}"  value="Add" oncomplete="PF('tasksDialog').hide()"/>
+                                        <p:commandButton id="confirm" value="Yes" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+                                                         process="tableTasks" actionListener="#{personsMBean.addTask(tasksMBean.selectedTask)}" oncomplete="PF('tasksDialog').hide()"/>
+                                        <p:commandButton id="decline" value="No" styleClass="ui-confirmdialog-no" icon="ui-icon-close" 
+                                                         onclick="tasksDialog.hide()" />  
                                     </f:facet>
                                 </p:dataTable>
                             </p:outputPanel>
                         </p:dialog>
-                        <!-- END DIALOG PERSONINFO -->
+                        <!-- END DIALOG LISTTASKS -->
 
                         <!-- BEGIN CONFIRMDIALOG DELETEPERSON -->
                         <h:form>

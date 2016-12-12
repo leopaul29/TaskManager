@@ -6,7 +6,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-    
+
     <head>
         <title>Gestion de projet</title>
     </head>
@@ -83,9 +83,18 @@
                                         <h:outputText value="Description" />
                                         <h:outputText value="#{taskTableMBean.task.description}" />
                                     </p:panelGrid>
+
+                                    <p:panelGrid  columns="3" columnClasses="label,value,status">
+                                        <c:forEach items="#{taskTableMBean.task.persons}" var="person">
+                                            <h:outputText value="#{person.login}" />
+                                            <h:outputText value="#{person.firstname}" />
+                                            <h:outputText value="#{person.lastname}" />
+                                        </c:forEach>
+                                    </p:panelGrid>
                                 </p:outputPanel>
                             </p:dialog>
                             <!-- END DIALOG TASKINFO -->
+
                         </h:form>
 
                         <p:droppable for=":form_#{status}:field_#{status}"

@@ -33,11 +33,20 @@ public class PersonsMBean implements Serializable {
     @EJB
     private PersonsManager pm;
     private List<Person> listPerson = new ArrayList<>();
+    private List<Person> selectedPerson = new ArrayList<>();
     private Person person = new Person();
     private String login;
     private String password;
     private String firstname;
     private String lastname;
+
+    public List<Person> getSelectedPerson() {
+        return selectedPerson;
+    }
+
+    public void setSelectedPerson(List<Person> selectedPerson) {
+        this.selectedPerson = selectedPerson;
+    }
 
     public Person getPerson() {
         return person;
@@ -78,7 +87,7 @@ public class PersonsMBean implements Serializable {
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
-    
+
     /**
      * Creates a new instance of PersonsMBean
      */
@@ -87,10 +96,10 @@ public class PersonsMBean implements Serializable {
     public LazyDataModel<Person> getModele() {
         return modele;
     }
-    
+
     public PersonsMBean() {
         modele = new LazyDataModel<Person>() {
-            
+
             @Override
             public List<Person> load(int start, int nb, String nomColonne, org.primefaces.model.SortOrder orderTri, Map<String, Object> filters) {
                 // On va requeter pour récupérer
@@ -108,7 +117,7 @@ public class PersonsMBean implements Serializable {
             }
         };
     }
-    
+
     public List<Person> getPersons() {
         if (listPerson.isEmpty()) {
             refreshCache();
@@ -118,7 +127,7 @@ public class PersonsMBean implements Serializable {
 
         return listPerson;
     }
-    
+
     public void refreshCache() {
         System.out.println("PERSON : REGENERATE CACHE");
         listPerson = pm.findAll();
@@ -127,14 +136,14 @@ public class PersonsMBean implements Serializable {
 
     public String createPerson() {
         System.out.println("PERSON : JSF BEAN CREATEPERSON");
-        
+
         pm.createPerson(login, password, firstname, lastname);
-        
+
         refreshCache();
         return "listPerson?faces=redirect=true";
     }
-    
-    public String removePerson(Person person){
+
+    public String removePerson(Person person) {
         System.out.println("Remove person: " + person.getId());
         try {
             pm.removePerson(person);
@@ -142,10 +151,10 @@ public class PersonsMBean implements Serializable {
         } catch (Exception ex) {
             Logger.getLogger(PersonsMBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return "listPerson?faces=redirect=true";
     }
-    
+
     public String removePerson() {
         System.out.println("Remove person: " + person.getId());
         try {
@@ -154,27 +163,35 @@ public class PersonsMBean implements Serializable {
         } catch (Exception ex) {
             Logger.getLogger(PersonsMBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return "listPerson?faces=redirect=true";
     }
-    
+
     public void onRowEdit(RowEditEvent event) {
         FacesMessage msg = new FacesMessage("Person Edited", "" + ((Person) event.getObject()).getId());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-     
+
     public void onRowCancel(RowEditEvent event) {
         FacesMessage msg = new FacesMessage("Edit Cancelled", "" + ((Person) event.getObject()).getId());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-    
+
     public void addTask(List<Task> tasks) {
         System.out.println("TASKS : " + tasks);
         System.out.println("PERSON : " + person);
-        for (Task task : tasks) {
-            person.addTask(task);
+
+        try {
+            for (Task task : tasks) {
+                person.addTask(task);
+            }
+
+            pm.update(person);
+        } catch (Exception ex) {
+            Logger.getLogger(PersonsMBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        System.out.println("PERSON TASKS : " +person.getTasks());
+        tasks.clear();
+        System.out.println("PERSON TASKS : " + person.getTasks());
     }
 }
