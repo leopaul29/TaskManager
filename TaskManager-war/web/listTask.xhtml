@@ -168,19 +168,19 @@
                                         <h:outputText value="#{item.id}"/> 
                                     </p:column>
 
-                                    <p:column sortBy="#{item.login}">
+                                    <p:column sortBy="#{item.login}" filterBy="#{item.login}">
                                         <f:facet name="header">
                                             <h:outputText value="Login"/>
                                         </f:facet>
                                         <h:outputText value="#{item.login}"/> 
                                     </p:column>
-                                    <p:column sortBy="#{item.firstname}">
+                                    <p:column sortBy="#{item.firstname}" filterBy="#{item.firstname}">
                                         <f:facet name="header">
                                             <h:outputText value="Firstname"/>
                                         </f:facet>
                                         <h:outputText value="#{item.firstname}"/> 
                                     </p:column>
-                                    <p:column sortBy="#{item.lastname}">
+                                    <p:column sortBy="#{item.lastname}" filterBy="#{item.lastname}">
                                         <f:facet name="header">
                                             <h:outputText value="Lastname"/>
                                         </f:facet>
