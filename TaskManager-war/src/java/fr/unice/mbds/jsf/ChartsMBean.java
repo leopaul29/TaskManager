@@ -61,9 +61,11 @@ public class ChartsMBean {
         if (pieModel1 == null) {
             createChartPie();
         }
-        pieModel1.set("non attribuée", tm.countStatus(StatusEnum.NO_ATTRIBUTED));
-        pieModel1.set("en cours", tm.countStatus(StatusEnum.IN_PROGRESS));
-        pieModel1.set("complète", tm.countStatus(StatusEnum.COMPLETED));
+
+        for (int i = 0; i < StatusEnum.values().length; i++) {
+            StatusEnum s = StatusEnum.values()[i];
+            pieModel1.set(s.name(), tm.countStatus(s));
+        }
     }
 
     public String updateChart() {
